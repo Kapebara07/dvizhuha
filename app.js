@@ -1,3 +1,10 @@
+// Сайт не должен открываться внутри чужой страницы (кликджекинг): GitHub Pages не даёт поставить заголовок, поэтому так.
+if (window.top !== window.self) {
+  document.body.textContent = 'Официальный сайт: https://dvizhuha-mc.github.io';
+  try { window.top.location.replace(window.location.href); } catch { /* песочница не пустила — страница уже пустая */ }
+  throw new Error('framed');
+}
+
 const HOST = '185.137.233.193:25661';
 // Браузер не умеет пинговать Minecraft-сервер, поэтому онлайн берём у публичных сервисов.
 // Оба за Cloudflare: в РФ могут не открыться — тогда табло так и скажет, скачиванию это не мешает.
@@ -24,6 +31,16 @@ $('#copy').addEventListener('click', async () => {
   } catch {
     getSelection().selectAllChildren($('#addr'));
     toast('Выделил адрес, нажми Ctrl+C');
+  }
+});
+
+$('#copyHash').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText($('#hash').textContent.trim());
+    toast('Отпечаток скопирован');
+  } catch {
+    getSelection().selectAllChildren($('#hash'));
+    toast('Выделил отпечаток, нажми Ctrl+C');
   }
 });
 

@@ -1,0 +1,8 @@
+{
+  "version": "1.1.0",
+  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.1.0/Dvizhuha-Launcher-Setup.exe",
+  "size": 206840428,
+  "sha256": "4ca242ae6ec0e85c3911cba3a33f78fb033aa879d5828a67dbf395af856e1766",
+  "notes": "Автообновление, проверка файлов с зеркала, защита от подмены",
+  "signature": "E8CcIVIAbnWGPOadUz8G7Vp5dCPCkc+Ze7qjXAzBlO7p4vnBcfCIrbWONasbGE7tc/sluDhscZGOyieT2MnoBQ=="
+}

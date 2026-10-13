@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Только свои файлы и два сервиса онлайна: чужой скрипт на страницу не встроить -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src https://api.mcstatus.io https://api.mcsrvstat.us; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
   <title>Движуха — лаунчер сервера</title>
   <meta name="description" content="Лаунчер сервера Движуха на Create Aeronautics: сам ставит Java, Minecraft, NeoForge и сборку. Аккаунт не нужен.">
   <meta name="theme-color" content="#1b1c1f">
@@ -43,7 +46,7 @@
       <a class="stub" id="download" href="https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/latest/download/Dvizhuha-Launcher-Setup.exe">
         <span class="stub-k">посадка</span>
         <span class="stub-v">Скачать лаунчер</span>
-        <span class="stub-sub">Windows 10 и 11, 64 бита · 190 МБ · версия 1.0.0</span>
+        <span class="stub-sub">Windows 10 и 11, 64 бита · 197 МБ · версия 1.1.0</span>
       </a>
       <p class="phone-note">Лаунчер для компьютера с Windows. Открой эту страницу на ПК, чтобы скачать.</p>
       <!-- Запасная ссылка: впиши адрес в data-href, тогда строка появится -->
@@ -109,6 +112,19 @@
       <div><dt>память</dt><dd>Смотрит, сколько оперативки в компьютере, и подсказывает, сколько отдать игре.</dd></div>
       <div><dt>ремонт</dt><dd>Кнопка «Проверить файлы» перекачает то, что сломалось, без переустановки.</dd></div>
     </dl>
+  </section>
+
+  <!-- Как отличить настоящий лаунчер -->
+  <section class="verify">
+    <h2>Как отличить настоящий лаунчер</h2>
+    <div class="verify-body">
+      <p>Качай только отсюда, с <b class="mono">dvizhuha-mc.github.io</b>. Если кто-то кидает лаунчер с другого сайта или файлом в личку, это не наш.</p>
+      <p>У настоящего установщика версии <span id="hashVer">1.1.0</span> такой отпечаток SHA-256:</p>
+      <div class="hash-row"><code class="hash mono" id="hash">4ca242ae6ec0e85c3911cba3a33f78fb033aa879d5828a67dbf395af856e1766</code><button class="tiny" id="copyHash" type="button">скопировать</button></div>
+      <p class="small">Проверить: открой PowerShell в папке со скачанным файлом и выполни
+        <code class="mono">Get-FileHash .\Dvizhuha-Launcher-Setup.exe</code>. Строка Hash должна совпасть с этой.</p>
+      <p class="small">Дальше лаунчер обновляется сам и ставит только обновления, подписанные ключом сервера. Подделку он не примет, даже если её выложат вместо нашей.</p>
+    </div>
   </section>
 </main>
 
