@@ -5,7 +5,7 @@
 
 ## Что где менять
 - **Ссылка на установщик** — `index.html`, тег `<a id="download" href="…">`. Сейчас там
-  `https://github.com/Kapebara07/dvizhuha/releases/latest/download/Dvizhuha-Launcher-Setup.exe`:
+  `https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/latest/download/Dvizhuha-Launcher-Setup.exe`:
   такая ссылка всегда ведёт на файл из последнего релиза, если загружать его под этим именем.
 - **Подпись под кнопкой** (размер, версия) — там же, `<span class="stub-sub">`.
 - **Запасная ссылка** — `index.html`, `<p id="mirror" data-href="">`. Впиши адрес (например, Google Диск) — строка
@@ -19,8 +19,9 @@
 на скачивание это не влияет.
 
 ## Как выложить на GitHub Pages
-1. Создать публичный репозиторий `dvizhuha` и залить туда содержимое этой папки.
-2. Settings → Pages → Deploy from a branch → `main`, папка `/ (root)`. Сайт будет на `https://kapebara07.github.io/dvizhuha/`.
+Сайт живёт в организации `dvizhuha-mc`, репозиторий `dvizhuha-mc.github.io`, поэтому адрес — `https://dvizhuha-mc.github.io/`.
+1. Залить изменения в ветку `main` — Pages пересоберётся сам за минуту.
+2. Settings → Pages → Deploy from a branch → `main`, папка `/ (root)` (уже включено).
 3. Releases → Draft a new release → тег `v1.0.0` → прикрепить `Dvizhuha-Launcher-Setup-1.0.0.exe`,
    **переименовав в `Dvizhuha-Launcher-Setup.exe`** (в релиз можно до 2 ГБ на файл; в сам репозиторий 200 МБ не влезут).
 4. При новой версии лаунчера — новый релиз с файлом под тем же именем; сайт менять не нужно, кроме подписи с версией.
