@@ -1,0 +1,149 @@
+@font-face { font-family: 'Alumni Sans'; src: url('fonts/AlumniSans.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: 'PT Sans'; src: url('fonts/PTSans-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'PT Sans'; src: url('fonts/PTSans-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'PT Sans'; src: url('fonts/PTSans-Italic.woff2') format('woff2'); font-style: italic; font-display: swap; }
+@font-face { font-family: 'PT Mono'; src: url('fonts/PTMono.woff2') format('woff2'); font-display: swap; }
+
+/* Те же три цвета, что в лаунчере: чернила, бумага билета, латунь Create */
+:root {
+  --ink: #1b1c1f;
+  --ink-2: #24262b;
+  --ink-3: #33353a;
+  --board: #121316;
+  --paper: #ebe2cd;
+  --paper-2: #ddd2b8;
+  --paper-ink: #2a2620;
+  --paper-mute: #7d7262;
+  --brass: #d8772c;
+  --brass-dark: #a9531a;
+  --mute: #8b8a86;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { min-height: 100vh; background: var(--ink); color: var(--paper); font: 17px/1.5 'PT Sans', sans-serif; overflow-x: hidden; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+.mono { font-family: 'PT Mono', monospace; }
+[hidden] { display: none !important; }
+
+main { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+h2 { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 48px; line-height: .95; color: var(--paper); }
+
+/* ---------- Вылет ---------- */
+.departure { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 56px; align-items: start; padding: 72px 0 88px; }
+.intro { position: relative; padding-top: 6px; }
+.title { position: relative; z-index: 1; font-family: 'Alumni Sans', sans-serif; font-weight: 900; font-size: 168px; line-height: .78; letter-spacing: -.01em; color: var(--paper); margin-left: -6px; }
+/* Штамп поставлен поверх конца названия, как в лаунчере */
+.stamp { position: absolute; z-index: 0; left: 470px; top: -46px; width: 150px; height: 150px; color: var(--brass); opacity: .9; transform: rotate(-14deg); pointer-events: none; }
+.stamp text { font-family: 'PT Sans', sans-serif; font-weight: 700; }
+.lead { max-width: 30em; margin-top: 30px; color: #c9c1ae; font-size: 19px; }
+
+/* Кнопка = отрывной корешок билета: перфорация слева, вырезы сверху и снизу */
+.stub { position: relative; display: inline-flex; flex-direction: column; gap: 2px; margin-top: 38px; padding: 20px 44px 20px 40px;
+  background-color: var(--brass); color: var(--ink); text-decoration: none; border-radius: 0 6px 6px 0;
+  background-image: radial-gradient(circle at 0 6px, var(--ink) 2.5px, transparent 3px); background-size: 2px 14px; background-repeat: repeat-y;
+  transform: rotate(-1.4deg); transition: transform .18s ease, background-color .15s; }
+.stub::before, .stub::after { content: ''; position: absolute; left: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); }
+.stub::before { top: -11px; }
+.stub::after { bottom: -11px; }
+.stub-k { font-style: italic; font-size: 15px; color: #5a2a08; }
+.stub-v { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 54px; line-height: .95; }
+.stub-sub { font-size: 14px; color: #5a2a08; }
+.stub:hover { transform: translate(5px, -2px) rotate(.6deg); background-color: #e5843a; }
+.stub:active { transform: translate(7px, -1px) rotate(1.2deg); }
+.stub:focus-visible { outline: 2px solid var(--paper); outline-offset: 4px; }
+.phone-note { display: none; margin-top: 16px; padding-left: 12px; border-left: 3px solid var(--brass); color: var(--paper); font-size: 15px; }
+@media (hover: none) and (pointer: coarse) { .phone-note { display: block; } }
+.mirror { margin-top: 18px; color: var(--mute); font-size: 15px; }
+.mirror a { color: var(--brass); text-underline-offset: 3px; }
+
+/* ---------- Табло ---------- */
+.board { display: flex; flex-direction: column; padding: 18px 18px 16px; background: var(--board); border: 1px solid var(--ink-3); border-radius: 4px; }
+.route { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--ink-3); }
+.cell + .cell { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--ink-3); }
+.line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.k { display: block; color: var(--mute); font-style: italic; font-size: 14px; }
+.v { display: block; font-size: 16px; color: var(--paper); line-height: 1.35; }
+.v.small { font-size: 13.5px; color: #c9c1ae; }
+.tiny { margin-top: 2px; color: var(--brass); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.tiny:hover { color: var(--paper); }
+
+.b-head { display: flex; align-items: center; gap: 10px; }
+.b-title { margin-right: auto; font-family: 'Alumni Sans', sans-serif; font-weight: 700; font-size: 32px; line-height: 1; }
+.flaps { display: flex; gap: 3px; }
+.flap { position: relative; width: 32px; height: 46px; display: grid; place-items: center; background: var(--ink-2); border-radius: 3px;
+  font-family: 'PT Mono', monospace; font-size: 32px; color: var(--brass); overflow: hidden; white-space: pre; }
+.flap::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #0c0d0f; }
+.flap.turn { animation: flapTurn .32s ease-out; }
+@keyframes flapTurn { 0% { transform: scaleY(.15); filter: brightness(.6); } 100% { transform: none; } }
+.b-of { width: 56px; color: var(--mute); font-size: 15px; }
+.b-status { display: flex; align-items: center; gap: 8px; margin: 12px 0 10px; color: var(--mute); font-size: 14.5px; }
+.lamp { width: 8px; height: 8px; border-radius: 50%; background: #4a4b4f; flex: none; }
+.lamp.on { background: var(--brass); }
+.lamp.off { background: #b3261e; }
+.b-list { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 6px; }
+.row { position: relative; height: 27px; padding: 0 8px; display: flex; align-items: center; background: #1c1e22; border-radius: 2px;
+  font-family: 'PT Mono', monospace; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(0, 0, 0, .55); }
+.b-note { min-height: 1em; margin-top: 10px; color: var(--mute); font-size: 13.5px; line-height: 1.4; }
+
+/* ---------- Как попасть ---------- */
+.howto { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 64px; align-items: center; padding: 72px 0; border-top: 1px dashed var(--ink-3); }
+.photo { position: relative; transform: rotate(1.2deg); }
+.photo img { display: block; width: 100%; height: auto; border-radius: 3px; }
+.photo figcaption { margin-top: 12px; color: var(--mute); font-size: 14.5px; font-style: italic; transform: rotate(-1.2deg); }
+.steps { margin-top: 26px; list-style: none; counter-reset: s; }
+.steps li { position: relative; padding-left: 52px; color: #c9c1ae; counter-increment: s; }
+.steps li + li { margin-top: 22px; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: -2px; width: 34px; height: 46px; display: grid; place-items: center;
+  background: var(--ink-2); border-radius: 3px; color: var(--brass); font: 26px/1 'PT Mono', monospace; }
+.steps b { display: block; color: var(--paper); }
+
+/* ---------- Что умеет ---------- */
+.features { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 64px; padding: 64px 0 88px; border-top: 1px dashed var(--ink-3); }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; }
+.fields div { padding: 14px 0; border-bottom: 1px dashed var(--ink-3); }
+.fields dt { color: var(--brass); font-style: italic; font-size: 15px; }
+.fields dd { color: #c9c1ae; }
+
+footer { max-width: 1120px; margin: 0 auto; padding: 22px 40px 34px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
+  color: var(--mute); font-size: 14.5px; border-top: 1px solid var(--ink-3); }
+
+.toast { position: fixed; left: 50%; bottom: 22px; z-index: 10; padding: 10px 16px; background: var(--paper); color: var(--ink); border-left: 4px solid var(--brass);
+  font-weight: 700; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; transition: transform .2s, opacity .2s; }
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+/* ---------- Узкие экраны ---------- */
+@media (max-width: 1000px) {
+  .departure { grid-template-columns: 1fr; gap: 48px; padding-top: 56px; padding-bottom: 64px; }
+  .board { max-width: 520px; }
+  .howto { grid-template-columns: 1fr; gap: 40px; padding: 56px 0; }
+  .features { grid-template-columns: 1fr; gap: 24px; padding: 56px 0 64px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  main { padding: 0 16px; }
+  footer { padding: 20px 16px 28px; }
+  h2 { font-size: 40px; }
+  .departure { padding-top: 40px; gap: 40px; }
+  .title { font-size: 112px; margin-left: -3px; }
+  .stamp { left: auto; right: 0; top: -38px; width: 100px; height: 100px; }
+  .lead { margin-top: 22px; font-size: 17px; }
+  /* корешок на всю ширину, перфорация сверху */
+  .stub { display: flex; width: 100%; margin-top: 30px; padding: 22px 20px 18px; border-radius: 0 0 6px 6px; transform: rotate(-.8deg);
+    background-image: radial-gradient(circle at 6px 0, var(--ink) 2.5px, transparent 3px); background-size: 14px 2px; background-repeat: repeat-x; }
+  .stub::before, .stub::after { top: -11px; bottom: auto; }
+  .stub::before { left: -11px; }
+  .stub::after { left: auto; right: -11px; }
+  .stub:hover, .stub:active { transform: rotate(-.8deg); }
+  .stub-v { font-size: 46px; }
+  .fields { grid-template-columns: 1fr; }
+  .photo { transform: none; }
+  .photo figcaption { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flap.turn { animation: none; }
+  .stub, .toast { transition: none; }
+}

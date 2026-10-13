@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Движуха — лаунчер сервера</title>
+  <meta name="description" content="Лаунчер сервера Движуха на Create Aeronautics: сам ставит Java, Minecraft, NeoForge и сборку. Аккаунт не нужен.">
+  <meta name="theme-color" content="#1b1c1f">
+  <meta property="og:title" content="Движуха — лаунчер сервера">
+  <meta property="og:description" content="Сервер Minecraft на Create Aeronautics. Скачай лаунчер, впиши ник и нажми «Играть».">
+  <meta property="og:image" content="img/launcher.png">
+  <link rel="icon" href="img/favicon.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="preload" href="fonts/AlumniSans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main>
+  <!-- Вылет: название, кнопка-корешок и табло с онлайном -->
+  <section class="departure">
+    <div class="intro">
+      <h1 class="title">Движуха</h1>
+      <svg class="stamp" viewBox="0 0 160 160" aria-hidden="true">
+        <defs>
+          <path id="ring" d="M80 80 m-58 0 a58 58 0 1 1 116 0 a58 58 0 1 1 -116 0"/>
+          <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3"/><feComponentTransfer><feFuncA type="discrete" tableValues="0 1 1 1 1 0 1 1"/></feComponentTransfer></filter>
+        </defs>
+        <g filter="url(#ink)" fill="none" stroke="currentColor">
+          <circle cx="80" cy="80" r="74" stroke-width="3"/>
+          <circle cx="80" cy="80" r="45" stroke-width="1.5"/>
+          <text fill="currentColor" stroke="none" font-size="13.5" letter-spacing="2.2"><textPath href="#ring">ДВИЖУХА · CREATE AERONAUTICS · ДВИЖУХА ·</textPath></text>
+          <g stroke-width="2.2" stroke-linejoin="round">
+            <path d="M52 76c0-9 13-15 28-15s28 6 28 15-13 15-28 15-28-6-28-15Z"/>
+            <path d="M108 76l9-8v16z"/>
+            <path d="M72 91l-3 9h22l-3-9"/>
+          </g>
+        </g>
+      </svg>
+      <p class="lead">Сервер Minecraft на Create Aeronautics. Лаунчер сам поставит игру и сборку, аккаунт не нужен: впиши ник и играй.</p>
+
+      <!-- Ссылка на установщик. Меняется здесь и только здесь (см. README.md). -->
+      <a class="stub" id="download" href="https://github.com/Kapebara07/dvizhuha/releases/latest/download/Dvizhuha-Launcher-Setup.exe">
+        <span class="stub-k">посадка</span>
+        <span class="stub-v">Скачать лаунчер</span>
+        <span class="stub-sub">Windows 10 и 11, 64 бита · 190 МБ · версия 1.0.0</span>
+      </a>
+      <p class="phone-note">Лаунчер для компьютера с Windows. Открой эту страницу на ПК, чтобы скачать.</p>
+      <!-- Запасная ссылка: впиши адрес в data-href, тогда строка появится -->
+      <p class="mirror" id="mirror" data-href="" hidden>Не качается? <a href="#" id="mirrorLink">Запасная ссылка</a></p>
+    </div>
+
+    <aside class="board" aria-label="Кто сейчас на сервере">
+      <div class="route">
+        <div class="cell">
+          <span class="k">куда</span>
+          <div class="line"><span class="v mono" id="addr">185.137.233.193:25661</span><button class="tiny" id="copy" type="button">скопировать</button></div>
+        </div>
+        <div class="cell">
+          <span class="k">борт</span>
+          <span class="v mono small">Minecraft 1.21.1 · NeoForge 21.1.248</span>
+        </div>
+      </div>
+      <div class="b-head">
+        <span class="b-title">На борту</span>
+        <span class="flaps" id="count"><span class="flap"> </span><span class="flap"> </span></span>
+        <span class="b-of" id="max"></span>
+      </div>
+      <div class="b-status"><i class="lamp" id="lamp"></i><span id="statusText">спрашиваю сервер…</span></div>
+      <div class="b-list" id="players"></div>
+      <p class="b-note" id="note"></p>
+    </aside>
+  </section>
+
+  <!-- Как попасть на борт -->
+  <section class="howto">
+    <figure class="photo">
+      <img src="img/launcher.webp" width="662" height="504" alt="Окно лаунчера: билет с полем для ника, адресом сервера и оранжевой кнопкой «Играть»" loading="lazy">
+      <figcaption>Так выглядит лаунчер. Ник пишешь в поле «пассажир».</figcaption>
+    </figure>
+
+    <div class="steps-col">
+      <h2>Как попасть на борт</h2>
+      <ol class="steps">
+        <li>
+          <b>Скачай и запусти установщик.</b>
+          Лаунчер не подписан, поэтому Windows может показать синее окно «Windows защитила ваш компьютер».
+          Нажми «Подробнее», потом «Выполнить в любом случае».
+        </li>
+        <li>
+          <b>Впиши ник.</b>
+          Латиница, цифры и _, от 3 до 16 знаков. Под ним тебя увидят на сервере. Покупать Minecraft не нужно.
+        </li>
+        <li>
+          <b>Нажми «Играть».</b>
+          В первый раз лаунчер скачает Java, Minecraft 1.21.1, NeoForge и сборку, это займёт время.
+          Остальные моды сервера докачаются сами, когда зайдёшь.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Что умеет -->
+  <section class="features">
+    <h2>Что ещё умеет лаунчер</h2>
+    <dl class="fields">
+      <div><dt>скин</dt><dd>Свой PNG или скин любого игрока с лицензией. Его видят все на сервере.</dd></div>
+      <div><dt>табло</dt><dd>Показывает, сколько людей на сервере и кто именно, ещё до запуска игры.</dd></div>
+      <div><dt>память</dt><dd>Смотрит, сколько оперативки в компьютере, и подсказывает, сколько отдать игре.</dd></div>
+      <div><dt>ремонт</dt><dd>Кнопка «Проверить файлы» перекачает то, что сломалось, без переустановки.</dd></div>
+    </dl>
+  </section>
+</main>
+
+<footer>
+  <span>Движуха · сервер на Create Aeronautics</span>
+  <span class="mono">185.137.233.193:25661</span>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>
