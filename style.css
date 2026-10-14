@@ -74,6 +74,31 @@ h2 { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 48px; 
 .foot-soc a:hover { color: var(--brass); }
 .foot-soc svg { width: 18px; height: 18px; }
 
+/* ---------- Выбор системы: бумажный лист, как окна в лаунчере ---------- */
+.os-dialog { width: min(980px, calc(100vw - 32px)); max-height: calc(100vh - 32px); margin: auto; padding: 30px 32px 30px; border: 0; border-radius: 4px;
+  background: var(--paper); color: var(--paper-ink); box-shadow: 0 30px 60px rgba(0, 0, 0, .55); }
+.os-dialog::backdrop { background: rgba(12, 12, 14, .74); }
+.os-dialog h2 { color: var(--ink); font-size: 46px; }
+.os-close { position: absolute; top: 16px; right: 16px; }
+.os-close button { width: 36px; height: 36px; color: var(--paper-mute); font-size: 16px; }
+.os-close button:hover { color: var(--ink); }
+.os-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 22px; }
+.os { display: flex; flex-direction: column; gap: 10px; padding: 4px 22px 6px; border-left: 1px dashed #bfb294; }
+.os:first-child { padding-left: 0; border-left: 0; }
+.os:last-child { padding-right: 0; }
+.os h3 { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 34px; line-height: 1; color: var(--ink); }
+.os-req { margin-top: -6px; color: var(--paper-mute); font-size: 14.5px; font-style: italic; }
+.os.mine h3::after { content: 'твоя система'; margin-left: 10px; vertical-align: 6px; padding: 2px 7px; border-radius: 2px;
+  background: var(--brass); color: var(--ink); font: 700 12px/1.4 'PT Sans', sans-serif; }
+.os-btn { display: block; padding: 11px 14px; border: 1.5px solid var(--ink); border-radius: 3px; background: var(--ink); color: var(--paper);
+  text-decoration: none; font-weight: 700; font-size: 15.5px; }
+.os-btn:hover { background: var(--brass-dark); border-color: var(--brass-dark); }
+.os-btn.alt { background: transparent; color: var(--ink); }
+.os-btn.alt:hover { background: var(--ink); color: var(--paper); }
+.os-btn.pick { background: var(--brass); border-color: var(--brass); color: var(--ink); }
+.os-note { margin-top: 2px; color: var(--paper-ink); font-size: 14px; line-height: 1.45; }
+.os-note code { font-family: 'PT Mono', monospace; font-size: 13px; }
+
 /* ---------- Табло ---------- */
 .board { display: flex; flex-direction: column; padding: 18px 18px 16px; background: var(--board); border: 1px solid var(--ink-3); border-radius: 4px; }
 .route { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--ink-3); }
@@ -131,6 +156,11 @@ h2 { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 48px; 
 .verify-body .small { font-size: 15px; color: var(--mute); }
 .verify-body code { color: var(--paper); font-size: .92em; }
 .hash-row { display: flex; align-items: baseline; gap: 14px; margin-top: 10px; padding: 12px 14px; background: var(--board); border: 1px solid var(--ink-3); border-radius: 3px; }
+.hashes { margin-top: 10px; border: 1px solid var(--ink-3); border-radius: 3px; background: var(--board); }
+.hashes div { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 12px; padding: 9px 14px; }
+.hashes div + div { border-top: 1px dashed var(--ink-3); }
+.hashes dt { color: var(--mute); font-size: 14px; font-style: italic; }
+.hashes dd .hash { font-size: 13px !important; }
 .hash { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 14px !important; line-height: 1.5; color: var(--brass) !important; }
 
 footer { max-width: 1120px; margin: 0 auto; padding: 22px 40px 34px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
@@ -169,7 +199,13 @@ footer { max-width: 1120px; margin: 0 auto; padding: 22px 40px 34px; display: fl
   .stub:hover, .stub:active { transform: rotate(-.8deg); }
   .stub-v { font-size: 46px; }
   .fields { grid-template-columns: 1fr; }
+  .os-dialog { padding: 24px 18px; }
+  .os-dialog h2 { font-size: 38px; padding-right: 30px; }
+  .os-list { grid-template-columns: 1fr; gap: 18px; }
+  .os, .os:first-child, .os:last-child { padding: 16px 0 0; border-left: 0; border-top: 1px dashed #bfb294; }
+  .os:first-child { border-top: 0; padding-top: 0; }
   .hash-row { flex-direction: column; gap: 6px; }
+  .hashes div { grid-template-columns: 1fr; gap: 2px; }
   .photo { transform: none; }
   .photo figcaption { transform: none; }
 }

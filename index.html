@@ -15,7 +15,7 @@
   <link rel="icon" href="img/favicon.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="preload" href="fonts/AlumniSans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=1.3.0">
 </head>
 <body>
 
@@ -46,9 +46,9 @@
       <a class="stub" id="download" href="https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/latest/download/Dvizhuha-Launcher-Setup.exe">
         <span class="stub-k">посадка</span>
         <span class="stub-v">Скачать лаунчер</span>
-        <span class="stub-sub">Windows 10 и 11, 64 бита · 197 МБ · версия 1.2.1</span>
+        <span class="stub-sub">Windows, macOS и Linux · версия 1.3.0</span>
       </a>
-      <p class="phone-note">Лаунчер для компьютера с Windows. Открой эту страницу на ПК, чтобы скачать.</p>
+      <p class="phone-note">Лаунчер для компьютера. Открой эту страницу на ПК или Mac, чтобы скачать.</p>
       <!-- Запасная ссылка: впиши адрес в data-href, тогда строка появится -->
       <p class="mirror" id="mirror" data-href="" hidden>Не качается? <a href="#" id="mirrorLink">Запасная ссылка</a></p>
 
@@ -92,9 +92,9 @@
       <h2>Как попасть на борт</h2>
       <ol class="steps">
         <li>
-          <b>Скачай и запусти установщик.</b>
-          Лаунчер не подписан, поэтому Windows может показать синее окно «Windows защитила ваш компьютер».
-          Нажми «Подробнее», потом «Выполнить в любом случае».
+          <b>Скачай лаунчер для своей системы и установи.</b>
+          Он не подписан платным сертификатом, поэтому при первом запуске система переспросит.
+          Что нажать на Windows, Mac и Linux — написано прямо под кнопками скачивания.
         </li>
         <li>
           <b>Впиши ник.</b>
@@ -125,10 +125,17 @@
     <h2>Как отличить настоящий лаунчер</h2>
     <div class="verify-body">
       <p>Качай только отсюда, с <b class="mono">dvizhuha-mc.github.io</b>. Если кто-то кидает лаунчер с другого сайта или файлом в личку, это не наш.</p>
-      <p>У настоящего установщика версии <span id="hashVer">1.2.1</span> такой отпечаток SHA-256:</p>
-      <div class="hash-row"><code class="hash mono" id="hash">570e90b4b8aa193fb0fc13004b8c82afc9f125852e6652d7067266293c1a0bac</code><button class="tiny" id="copyHash" type="button">скопировать</button></div>
-      <p class="small">Проверить: открой PowerShell в папке со скачанным файлом и выполни
-        <code class="mono">Get-FileHash .\Dvizhuha-Launcher-Setup.exe</code>. Строка Hash должна совпасть с этой.</p>
+      <p>Отпечатки SHA-256 файлов версии <span id="hashVer">1.3.0</span>:</p>
+      <dl class="hashes">
+        <div><dt>Windows</dt><dd><code class="hash mono">62558f37d095d9c8db28f2eae6b721cbb1461a69e1c6bd3c5fab3aa5588f9d1d</code></dd></div>
+        <div><dt>Mac M1–M4</dt><dd><code class="hash mono">31133bbe41ea4ec81512188ea00e9642a7dbfebf362d110f2925d722d64185ed</code></dd></div>
+        <div><dt>Mac Intel</dt><dd><code class="hash mono">fbb1d32333dfa9c3e87ea0bcc4f6656405e56e6f434996f418d864d643db3449</code></dd></div>
+        <div><dt>Linux AppImage</dt><dd><code class="hash mono">7daa584b4850e3b79ee2712090129c3571608af18912eebcb159c2ea6468c3d5</code></dd></div>
+        <div><dt>Linux .deb</dt><dd><code class="hash mono">faf4d97cceeb7796cbf36328c4db1af675eb88f47b46891beb4422fea37e7a9d</code></dd></div>
+      </dl>
+      <p class="small">Проверить: Windows — PowerShell, <code class="mono">Get-FileHash .\Dvizhuha-Launcher-Setup.exe</code>;
+        Mac — Терминал, <code class="mono">shasum -a 256 Dvizhuha-Launcher-mac-arm64.dmg</code>;
+        Linux — <code class="mono">sha256sum Dvizhuha-Launcher-x86_64.AppImage</code>. Строка должна совпасть с этой.</p>
       <p class="small">Дальше лаунчер обновляется сам и ставит только обновления, подписанные ключом сервера. Подделку он не примет, даже если её выложат вместо нашей.</p>
     </div>
   </section>
@@ -144,7 +151,35 @@
   <span class="mono">185.137.233.193:25661</span>
 </footer>
 
+<!-- Выбор системы: открывается по кнопке «Скачать лаунчер» -->
+<dialog class="os-dialog" id="osDialog" aria-labelledby="osTitle">
+  <form method="dialog" class="os-close"><button aria-label="Закрыть">✕</button></form>
+  <h2 id="osTitle">Для какой системы?</h2>
+  <div class="os-list">
+    <section class="os" data-os="windows">
+      <h3>Windows</h3>
+      <p class="os-req">Windows 10 и 11, 64 бита</p>
+      <a class="os-btn" href="https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/latest/download/Dvizhuha-Launcher-Setup.exe">Скачать для Windows</a>
+      <p class="os-note">Если появится синее окно «Windows защитила ваш компьютер» — «Подробнее», потом «Выполнить в любом случае».</p>
+    </section>
+    <section class="os" data-os="mac">
+      <h3>macOS</h3>
+      <p class="os-req">macOS 12 и новее</p>
+      <a class="os-btn" data-arch="arm" href="https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/latest/download/Dvizhuha-Launcher-mac-arm64.dmg">Mac на M1–M4</a>
+      <a class="os-btn alt" data-arch="intel" href="https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/latest/download/Dvizhuha-Launcher-mac-x64.dmg">Mac на Intel</a>
+      <p class="os-note">Открой .dmg и перетащи лаунчер в «Программы». Первый запуск macOS не пропустит: зайди в «Системные настройки» → «Конфиденциальность и безопасность» и нажми «Всё равно открыть».</p>
+    </section>
+    <section class="os" data-os="linux">
+      <h3>Linux</h3>
+      <p class="os-req">64 бита</p>
+      <a class="os-btn" href="https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/latest/download/Dvizhuha-Launcher-x86_64.AppImage">AppImage, любой дистрибутив</a>
+      <a class="os-btn alt" href="https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/latest/download/Dvizhuha-Launcher-amd64.deb">.deb для Ubuntu, Debian, Mint</a>
+      <p class="os-note">AppImage: в свойствах файла разреши запуск как программы (или <code>chmod +x</code>). Сам обновляется только AppImage, .deb обновляй с сайта.</p>
+    </section>
+  </div>
+</dialog>
+
 <div class="toast" id="toast" role="status"></div>
-<script src="app.js"></script>
+<script src="app.js?v=1.3.0"></script>
 </body>
 </html>

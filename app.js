@@ -34,15 +34,36 @@ $('#copy').addEventListener('click', async () => {
   }
 });
 
-$('#copyHash').addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText($('#hash').textContent.trim());
-    toast('Отпечаток скопирован');
-  } catch {
-    getSelection().selectAllChildren($('#hash'));
-    toast('Выделил отпечаток, нажми Ctrl+C');
-  }
+
+// Выбор системы по кнопке «Скачать лаунчер». Без JS ссылка просто качает версию для Windows.
+function detectOs() {
+  const p = (navigator.userAgentData?.platform || navigator.platform || navigator.userAgent || '').toLowerCase();
+  if (p.includes('mac')) return 'mac';
+  if (p.includes('linux') && !/android/.test(navigator.userAgent.toLowerCase())) return 'linux';
+  if (p.includes('win')) return 'windows';
+  return null;
+}
+const osDialog = $('#osDialog');
+const myOs = detectOs();
+if (myOs) {
+  const sec = osDialog.querySelector(`[data-os="${myOs}"]`);
+  sec.classList.add('mine');
+  sec.querySelector('.os-btn').classList.add('pick');
+}
+// Chrome на Mac умеет сказать, какой процессор: на Intel подсвечиваем вторую кнопку.
+navigator.userAgentData?.getHighEntropyValues?.(['architecture']).then((v) => {
+  if (myOs !== 'mac' || !v.architecture) return;
+  const arm = v.architecture.startsWith('arm');
+  osDialog.querySelector('[data-arch="arm"]').classList.toggle('pick', arm);
+  osDialog.querySelector('[data-arch="intel"]').classList.toggle('pick', !arm);
+}).catch(() => {});
+$('#download').addEventListener('click', (e) => {
+  if (typeof osDialog.showModal !== 'function') return; // совсем старый браузер — пусть качает по ссылке
+  e.preventDefault();
+  osDialog.showModal();
 });
+osDialog.addEventListener('click', (e) => { if (e.target === osDialog) osDialog.close(); });
+osDialog.querySelectorAll('.os-btn').forEach((a) => a.addEventListener('click', () => setTimeout(() => osDialog.close(), 300)));
 
 const mirror = $('#mirror');
 if (mirror.dataset.href) {

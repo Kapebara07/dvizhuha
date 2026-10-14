@@ -1,8 +1,31 @@
 {
-  "version": "1.2.1",
-  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.2.1/Dvizhuha-Launcher-Setup.exe",
-  "size": 206842879,
-  "sha256": "570e90b4b8aa193fb0fc13004b8c82afc9f125852e6652d7067266293c1a0bac",
-  "notes": "Настоящие вырезы на линии отрыва билета",
-  "signature": "FEOMLGPmONyTskwYIhOmStfXzkAEifqbQA7ub9IkdupxNB4PAkgm8CJs7NsDvVozYFQni/J6JIPV+oiaJK8yAw=="
+  "version": "1.3.0",
+  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.0/Dvizhuha-Launcher-Setup.exe",
+  "size": 206881610,
+  "sha256": "62558f37d095d9c8db28f2eae6b721cbb1461a69e1c6bd3c5fab3aa5588f9d1d",
+  "notes": "Лаунчер для Windows, macOS и Linux; автообновление на всех системах",
+  "signature": "mbau7QpWzMviOGNepz3Y9Q3COmAM4TsVsyxpyEXzCYCcbzp6lEzNMPHkitaBKY6Cbbx3nh2VQy3VJ0raZk4SCw==",
+  "assets": {
+    "win-x64": {
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.0/Dvizhuha-Launcher-Setup.exe",
+      "size": 206881610,
+      "sha256": "62558f37d095d9c8db28f2eae6b721cbb1461a69e1c6bd3c5fab3aa5588f9d1d"
+    },
+    "linux-x64": {
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.0/Dvizhuha-Launcher-x86_64.AppImage",
+      "size": 221611857,
+      "sha256": "7daa584b4850e3b79ee2712090129c3571608af18912eebcb159c2ea6468c3d5"
+    },
+    "mac-arm64": {
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.0/Dvizhuha-Launcher-mac-arm64.zip",
+      "size": 224310686,
+      "sha256": "9f47bfa2b99d142ac2603330e2f75d67ffdbc203b95f7121e5cc6b6405d2706f"
+    },
+    "mac-x64": {
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.0/Dvizhuha-Launcher-mac-x64.zip",
+      "size": 229934554,
+      "sha256": "40e45eb674384f3bb809ad1700be087ab38a7a39e3b49abf9ac17849c345483a"
+    }
+  },
+  "assetsSignature": "aWzypiBod/ZAE+KGpzL7vzils1hkRtXmPiBIYwSckwQIUloZp6jQJUAbZk3A32PTq8hJ6z9mIgR1EEz6gWu1Bw=="
 }
