@@ -59,6 +59,17 @@ h2 { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 48px; 
 .mirror { margin-top: 18px; color: var(--mute); font-size: 15px; }
 .mirror a { color: var(--brass); text-underline-offset: 3px; }
 
+/* Соцсети: строкой под кнопкой, без плашек */
+.socials { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 34px; }
+.soc { display: inline-flex; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font-size: 16px; font-weight: 700; }
+.soc svg { width: 20px; height: 20px; flex: none; color: var(--brass); }
+.soc:hover span { text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 4px; }
+.soc:focus-visible { outline: 2px solid var(--brass); outline-offset: 4px; }
+.foot-soc { display: inline-flex; gap: 16px; align-items: center; }
+.foot-soc a { color: var(--mute); display: inline-flex; }
+.foot-soc a:hover { color: var(--brass); }
+.foot-soc svg { width: 18px; height: 18px; }
+
 /* ---------- Табло ---------- */
 .board { display: flex; flex-direction: column; padding: 18px 18px 16px; background: var(--board); border: 1px solid var(--ink-3); border-radius: 4px; }
 .route { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--ink-3); }
