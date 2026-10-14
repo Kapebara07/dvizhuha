@@ -57,8 +57,9 @@ for (let attempt = 0; attempt < 3 && !out.online; attempt++) {
     if (!players) {
       // Без мода сервер называет 12 случайных ников за пинг — собираем всех за несколько пингов.
       const seen = new Set(sampleOf(j));
-      for (let k = 0; k < 20 && seen.size < count; k++) {
-        await new Promise((r) => setTimeout(r, 2000));
+      // Выборка меняется не на каждом пинге (сервер и Krypton держат ответ в кэше), поэтому собираем около полутора минут.
+      for (let k = 0; k < 30 && seen.size < count; k++) {
+        await new Promise((r) => setTimeout(r, 3000));
         try { for (const n of sampleOf(await ping())) seen.add(n); } catch { /* следующий */ }
       }
       players = [...seen];
