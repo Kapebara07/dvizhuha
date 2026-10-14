@@ -1,8 +1,8 @@
 {
-  "version": "1.2.0",
-  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.2.0/Dvizhuha-Launcher-Setup.exe",
-  "size": 206839659,
-  "sha256": "4b6ed01e2f20a82a92d5fe35e28c8a463f4bf986755c858ec3d2df828a0889d7",
-  "notes": "Статистика убийств и смертей, кнопка «Папка игры», исправлена полоска загрузки",
-  "signature": "IUMLWIb+FVE4YeFpq/kzMr/kP4Nqn50a32767+l6kJzC1TxXE6O65DpEsGwBdpWKmvu2BvbZIllAMWk10EGwDQ=="
+  "version": "1.2.1",
+  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.2.1/Dvizhuha-Launcher-Setup.exe",
+  "size": 206842879,
+  "sha256": "570e90b4b8aa193fb0fc13004b8c82afc9f125852e6652d7067266293c1a0bac",
+  "notes": "Настоящие вырезы на линии отрыва билета",
+  "signature": "FEOMLGPmONyTskwYIhOmStfXzkAEifqbQA7ub9IkdupxNB4PAkgm8CJs7NsDvVozYFQni/J6JIPV+oiaJK8yAw=="
 }

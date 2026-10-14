@@ -45,9 +45,13 @@ h2 { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 48px; 
   background-color: var(--brass); color: var(--ink); text-decoration: none; border-radius: 0 6px 6px 0;
   background-image: radial-gradient(circle at 0 6px, var(--ink) 2.5px, transparent 3px); background-size: 2px 14px; background-repeat: repeat-y;
   transform: rotate(-1.4deg); transition: transform .18s ease, background-color .15s; }
-.stub::before, .stub::after { content: ''; position: absolute; left: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); }
-.stub::before { top: -11px; }
-.stub::after { bottom: -11px; }
+/* Вырезы настоящие: маска, а не тёмные кружки поверх */
+.stub {
+  -webkit-mask: radial-gradient(circle at 0 0, #0000 11px, #000 11.5px) top / 100% 51% no-repeat,
+                radial-gradient(circle at 0 100%, #0000 11px, #000 11.5px) bottom / 100% 51% no-repeat;
+  mask: radial-gradient(circle at 0 0, #0000 11px, #000 11.5px) top / 100% 51% no-repeat,
+        radial-gradient(circle at 0 100%, #0000 11px, #000 11.5px) bottom / 100% 51% no-repeat;
+}
 .stub-k { font-style: italic; font-size: 15px; color: #5a2a08; }
 .stub-v { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 54px; line-height: .95; }
 .stub-sub { font-size: 14px; color: #5a2a08; }
@@ -156,9 +160,12 @@ footer { max-width: 1120px; margin: 0 auto; padding: 22px 40px 34px; display: fl
   /* корешок на всю ширину, перфорация сверху */
   .stub { display: flex; width: 100%; margin-top: 30px; padding: 22px 20px 18px; border-radius: 0 0 6px 6px; transform: rotate(-.8deg);
     background-image: radial-gradient(circle at 6px 0, var(--ink) 2.5px, transparent 3px); background-size: 14px 2px; background-repeat: repeat-x; }
-  .stub::before, .stub::after { top: -11px; bottom: auto; }
-  .stub::before { left: -11px; }
-  .stub::after { left: auto; right: -11px; }
+  .stub {
+    -webkit-mask: radial-gradient(circle at 0 0, #0000 11px, #000 11.5px) left / 51% 100% no-repeat,
+                  radial-gradient(circle at 100% 0, #0000 11px, #000 11.5px) right / 51% 100% no-repeat;
+    mask: radial-gradient(circle at 0 0, #0000 11px, #000 11.5px) left / 51% 100% no-repeat,
+          radial-gradient(circle at 100% 0, #0000 11px, #000 11.5px) right / 51% 100% no-repeat;
+  }
   .stub:hover, .stub:active { transform: rotate(-.8deg); }
   .stub-v { font-size: 46px; }
   .fields { grid-template-columns: 1fr; }
