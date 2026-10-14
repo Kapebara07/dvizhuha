@@ -94,7 +94,7 @@ const boosty = /^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boostyRaw) ? boost
     const bad = v && !NICK.test(v);
     $('#dnNick').classList.toggle('bad', !!bad);
     $('#dnNickHint').classList.toggle('bad', !!bad);
-    $('#dnNickHint').textContent = bad ? 'Латиница, цифры и _, от 3 до 16 знаков — как в игре.' : 'Можно не писать, если бонус не нужен.';
+    $('#dnNickHint').textContent = bad ? 'Латиница, цифры и _, от 3 до 16 знаков — как в игре.' : 'Можно не писать.';
   });
   $('#dnGo').addEventListener('click', () => {
     const nick = $('#dnNick').value.trim();
@@ -103,7 +103,8 @@ const boosty = /^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boostyRaw) ? boost
       $('#dnError').hidden = false;
       return;
     }
-    const msg = nick ? `Ник: ${nick}` : '';
+    const discord = $('#dnDiscord').value.trim().replace(/^@/, '').replace(/\s+/g, '').slice(0, 32);
+    const msg = [nick && `Ник: ${nick}`, discord && `Discord: ${discord}`].filter(Boolean).join(' · ');
     const url = `${boosty}/donate`;
     // Копируем, пока вкладка в фокусе (потом фокус уйдёт на Boosty и браузер не даст), ждать не нужно.
     if (msg) navigator.clipboard?.writeText(msg).catch(() => { /* текст всё равно показан ниже */ });

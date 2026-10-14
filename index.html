@@ -15,7 +15,7 @@
   <link rel="icon" href="img/favicon.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="preload" href="fonts/AlumniSans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20261014c">
+  <link rel="stylesheet" href="style.css?v=20261014d">
 </head>
 <body>
 
@@ -244,10 +244,10 @@
 </dialog>
 
 <!-- Поддержать сервер: своё окно, оплата на Boosty.
-     data-boosty — адрес страницы на Boosty (пусто — кнопка «Поддержать» на сайте не показывается),
+     data-boosty — адрес страницы на Boosty (пусто — окно пишет, что оплата пока не подключена),
      data-perk — что получает спонсор (пусто — строка не показывается). -->
 <dialog class="os-dialog donate-dialog" id="donateDialog" aria-labelledby="donateTitle"
-        data-boosty="" data-perk="">
+        data-boosty="" data-perk="От 100 ₽ — роль «Спонсор» в нашем Discord. Выдаём вручную, обычно в течение дня.">
   <form method="dialog" class="os-close"><button aria-label="Закрыть">✕</button></form>
   <h2 id="donateTitle">Поддержать сервер</h2>
   <p class="dn-lead">Деньги идут на аренду сервера. Оплата проходит на Boosty — номер карты вводишь там, не у нас.</p>
@@ -262,7 +262,10 @@
     </div>
     <span class="dn-k">ник в игре</span>
     <input type="text" id="dnNick" maxlength="16" placeholder="например, Kapebara" spellcheck="false" autocomplete="off">
-    <p class="dn-hint" id="dnNickHint">Можно не писать, если бонус не нужен.</p>
+    <p class="dn-hint" id="dnNickHint">Можно не писать.</p>
+    <span class="dn-k">ник в Discord</span>
+    <input type="text" id="dnDiscord" maxlength="32" placeholder="например, kapebara" spellcheck="false" autocomplete="off">
+    <p class="dn-hint">Нужен, чтобы выдать роль «Спонсор» в нашем Discord.</p>
     <p class="dn-perk" id="dnPerk" hidden></p>
     <button type="button" class="dn-go" id="dnGo">Перейти к оплате на Boosty</button>
     <p class="dn-error" id="dnError" role="alert" hidden>Оплата пока не подключена — загляни чуть позже.</p>
@@ -280,6 +283,6 @@
 </dialog>
 
 <div class="toast" id="toast" role="status"></div>
-<script src="app.js?v=20261014c"></script>
+<script src="app.js?v=20261014d"></script>
 </body>
 </html>
