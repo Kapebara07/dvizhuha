@@ -67,8 +67,10 @@ osDialog.querySelectorAll('.os-btn').forEach((a) => a.addEventListener('click', 
 
 // ---------- Поддержать сервер: своё окно, сама оплата — на Boosty ----------
 const donateDialog = $('#donateDialog');
-const boosty = (donateDialog.dataset.boosty || '').trim().replace(/\/+$/, '');
-if (/^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boosty)) {
+const boostyRaw = (donateDialog.dataset.boosty || '').trim().replace(/\/+$/, '');
+// Пока ссылки на Boosty нет, окно работает, но вместо оплаты пишет, что она ещё не подключена.
+const boosty = /^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boostyRaw) ? boostyRaw : '';
+{
   const perk = (donateDialog.dataset.perk || '').trim();
   if (perk) { $('#dnPerk').textContent = perk; $('#dnPerk').hidden = false; }
   let amount = 300;
@@ -97,6 +99,10 @@ if (/^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boosty)) {
   $('#dnGo').addEventListener('click', () => {
     const nick = $('#dnNick').value.trim();
     if (nick && !NICK.test(nick)) { $('#dnNick').focus(); return; }
+    if (!boosty) {
+      $('#dnError').hidden = false;
+      return;
+    }
     const msg = nick ? `Ник: ${nick}` : '';
     const url = `${boosty}/donate`;
     // Копируем, пока вкладка в фокусе (потом фокус уйдёт на Boosty и браузер не даст), ждать не нужно.
@@ -114,7 +120,9 @@ if (/^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boosty)) {
   $('#donateOpen').addEventListener('click', () => {
     $('#dnAfter').hidden = true;
     $('#dnForm').hidden = false;
-    if (typeof donateDialog.showModal === 'function') donateDialog.showModal(); else window.open(`${boosty}/donate`, '_blank', 'noopener');
+    $('#dnError').hidden = true;
+    if (typeof donateDialog.showModal === 'function') donateDialog.showModal();
+    else if (boosty) window.open(`${boosty}/donate`, '_blank', 'noopener');
   });
   donateDialog.addEventListener('click', (e) => { if (e.target === donateDialog) donateDialog.close(); });
 }
