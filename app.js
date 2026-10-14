@@ -65,6 +65,60 @@ $('#download').addEventListener('click', (e) => {
 osDialog.addEventListener('click', (e) => { if (e.target === osDialog) osDialog.close(); });
 osDialog.querySelectorAll('.os-btn').forEach((a) => a.addEventListener('click', () => setTimeout(() => osDialog.close(), 300)));
 
+// ---------- Поддержать сервер: своё окно, сама оплата — на Boosty ----------
+const donateDialog = $('#donateDialog');
+const boosty = (donateDialog.dataset.boosty || '').trim().replace(/\/+$/, '');
+if (/^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boosty)) {
+  const perk = (donateDialog.dataset.perk || '').trim();
+  if (perk) { $('#dnPerk').textContent = perk; $('#dnPerk').hidden = false; }
+  let amount = 300;
+  const NICK = /^[A-Za-z0-9_]{3,16}$/;
+  const setAmount = (a) => {
+    amount = a;
+    $('#dnAmounts').querySelectorAll('button').forEach((b) => b.classList.toggle('on', Number(b.dataset.a) === a));
+  };
+  $('#dnAmounts').addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    $('#dnOwn').value = '';
+    setAmount(Number(b.dataset.a));
+  });
+  $('#dnOwn').addEventListener('input', () => {
+    const v = Math.round(Number($('#dnOwn').value));
+    if (v >= 10) setAmount(v);
+  });
+  $('#dnNick').addEventListener('input', () => {
+    const v = $('#dnNick').value.trim();
+    const bad = v && !NICK.test(v);
+    $('#dnNick').classList.toggle('bad', !!bad);
+    $('#dnNickHint').classList.toggle('bad', !!bad);
+    $('#dnNickHint').textContent = bad ? 'Латиница, цифры и _, от 3 до 16 знаков — как в игре.' : 'Можно не писать, если бонус не нужен.';
+  });
+  $('#dnGo').addEventListener('click', () => {
+    const nick = $('#dnNick').value.trim();
+    if (nick && !NICK.test(nick)) { $('#dnNick').focus(); return; }
+    const msg = nick ? `Ник: ${nick}` : '';
+    const url = `${boosty}/donate`;
+    // Копируем, пока вкладка в фокусе (потом фокус уйдёт на Boosty и браузер не даст), ждать не нужно.
+    if (msg) navigator.clipboard?.writeText(msg).catch(() => { /* текст всё равно показан ниже */ });
+    window.open(url, '_blank', 'noopener');
+    $('#dnSum').textContent = `${amount} ₽`;
+    $('#dnMsg').textContent = msg;
+    $('#dnMsgStep').hidden = !msg;
+    $('#dnLink').href = url;
+    $('#dnForm').hidden = true;
+    $('#dnAfter').hidden = false;
+  });
+  $('#dnBack').addEventListener('click', () => { $('#dnAfter').hidden = true; $('#dnForm').hidden = false; });
+  $('#donateOpen').hidden = false;
+  $('#donateOpen').addEventListener('click', () => {
+    $('#dnAfter').hidden = true;
+    $('#dnForm').hidden = false;
+    if (typeof donateDialog.showModal === 'function') donateDialog.showModal(); else window.open(`${boosty}/donate`, '_blank', 'noopener');
+  });
+  donateDialog.addEventListener('click', (e) => { if (e.target === donateDialog) donateDialog.close(); });
+}
+
 const mirror = $('#mirror');
 if (mirror.dataset.href) {
   $('#mirrorLink').href = mirror.dataset.href;
