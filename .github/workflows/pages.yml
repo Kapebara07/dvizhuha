@@ -1,0 +1,44 @@
+name: Сайт и онлайн сервера
+
+# Раз в 10 минут пингуем сервер, кладём status.json (онлайн, все игроки, статистика) рядом с сайтом и публикуем.
+# Файл не коммитится — история репозитория не засоряется.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Онлайн и статистика сервера
+        run: node tools/fetch-status.mjs
+      - name: Собираю сайт
+        run: |
+          mkdir -p _site
+          cp -r index.html map.html style.css app.js update.json status.json fonts img vendor _site/ 2>/dev/null || true
+          ls -la _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

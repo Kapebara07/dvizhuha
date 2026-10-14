@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Только свои файлы и два сервиса онлайна: чужой скрипт на страницу не встроить -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src https://api.mcstatus.io https://api.mcsrvstat.us; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.mcstatus.io https://api.mcsrvstat.us; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
   <title>Движуха — лаунчер сервера</title>
   <meta name="description" content="Лаунчер сервера Движуха на Create Aeronautics: сам ставит Java, Minecraft, NeoForge и сборку. Аккаунт не нужен.">
@@ -15,7 +15,7 @@
   <link rel="icon" href="img/favicon.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="preload" href="fonts/AlumniSans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=1.3.1">
+  <link rel="stylesheet" href="style.css?v=20261014">
 </head>
 <body>
 
@@ -109,6 +109,66 @@
     </div>
   </section>
 
+  <!-- Карта мира -->
+  <section class="worldmap">
+    <div class="map-text">
+      <h2>Карта мира</h2>
+      <p>Мир 18 176 на 12 032 блока: острова, горы, на юго-востоке вулкан. Карту можно приблизить до одного блока и узнать координаты любого места.</p>
+      <a class="map-link" href="/map/">Открыть карту</a>
+      <p class="small">Снята при создании мира, построек игроков на ней нет.</p>
+    </div>
+    <a class="map-preview" href="/map/" aria-label="Открыть карту мира">
+      <img src="img/map-preview.webp" width="1136" height="752" alt="Карта мира сервера сверху: зелёные острова в синем море, снежные горы, вулкан" loading="lazy">
+    </a>
+  </section>
+
+  <!-- Статистика -->
+  <section class="stats" id="stats">
+    <div class="stats-side">
+      <h2>Статистика</h2>
+      <p>Сколько раз каждый убил других игроков и сколько раз умер — за всё время на сервере.</p>
+      <p class="small" id="statsUpd">Обновляется раз в 10 минут.</p>
+    </div>
+    <div class="stats-main">
+      <div class="stats-tools">
+        <div class="seg" id="statsSort" role="group" aria-label="Сортировка">
+          <button type="button" data-v="kills" class="on">по убийствам</button>
+          <button type="button" data-v="deaths">по смертям</button>
+        </div>
+        <input type="search" id="statsFind" placeholder="найти ник" maxlength="16" spellcheck="false" autocomplete="off">
+      </div>
+      <div class="stats-table" id="statsTable" role="table" aria-label="Убийства и смерти игроков">
+        <div class="st-head" role="row"><span>#</span><span>игрок</span><span>убил игроков</span><span>смертей</span></div>
+        <div id="statsBody"><p class="st-empty">Загружаю…</p></div>
+      </div>
+      <button type="button" class="tiny more" id="statsMore" hidden>Показать всех</button>
+    </div>
+  </section>
+
+  <!-- Моды -->
+  <section class="mods">
+    <div class="mods-side">
+      <h2>Моды</h2>
+      <p>В сборке больше двухсот модов вместе с библиотеками и исправлениями. Вот главные. Ставить их руками не нужно — лаунчер всё скачает сам.</p>
+    </div>
+    <div class="mods-groups">
+      <div class="mg"><h3>Create и полёты</h3><ul>
+        <li>Create</li><li>Create Aeronautics</li><li>Sable</li><li>Create Propulsion: Simulated</li><li>More Propulsion</li><li>Create: Aeroworks</li><li>Create Deep Seas</li><li>Drive By Wire</li></ul></div>
+      <div class="mg"><h3>Заводы и транспорт</h3><ul>
+        <li>Create: The Factory Must Grow</li><li>Create Crafts &amp; Additions</li><li>Create Nuclear</li><li>Create: Broken Bad</li><li>Create: Steam 'n' Rails</li><li>Create Tracks+</li><li>Create: Mobile Packages</li><li>CC: Tweaked</li></ul></div>
+      <div class="mg"><h3>Оружие и войны</h3><ul>
+        <li>Create Big Cannons</li><li>CBC Advanced Technology</li><li>Create: Armored Constructs</li><li>Create: Gunsmithing</li><li>Scorched Guns</li><li>Create: Radars</li><li>Warring Nations</li></ul></div>
+      <div class="mg"><h3>Деньги и приват</h3><ul>
+        <li>Create: Numismatics</li><li>FTB Chunks</li><li>FTB Teams</li></ul></div>
+      <div class="mg"><h3>Стройка и декор</h3><ul>
+        <li>Create Deco</li><li>Design n' Decor</li><li>Create: Copycats+</li><li>Create: Interiors</li><li>Create Encased</li><li>Create Bits 'n' Bobs</li><li>Immersive Paintings</li></ul></div>
+      <div class="mg"><h3>Быт</h3><ul>
+        <li>Farmer's Delight</li><li>Brewery</li><li>Sophisticated Backpacks</li><li>Corpse</li><li>Easy Villagers</li><li>Exposure</li><li>Simple Voice Chat</li></ul></div>
+      <div class="mg"><h3>У тебя в игре</h3><ul>
+        <li>Xaero's Minimap и World Map</li><li>Just Enough Items</li><li>Jade</li><li>Sodium</li><li>Iris (шейдеры)</li><li>Distant Horizons</li></ul></div>
+    </div>
+  </section>
+
   <!-- Что умеет -->
   <section class="features">
     <h2>Что ещё умеет лаунчер</h2>
@@ -180,6 +240,6 @@
 </dialog>
 
 <div class="toast" id="toast" role="status"></div>
-<script src="app.js?v=1.3.1"></script>
+<script src="app.js?v=20261014"></script>
 </body>
 </html>

@@ -124,9 +124,35 @@ function render(s) {
   }
   const hidden = s.count - s.names.length;
   if (hidden > 0) note.textContent = `И ещё ${hidden}: сервер называет не больше 12 ников за раз.`;
+  else if (s.at) note.textContent = `Обновлено ${ago(s.at)}.`;
 }
 
+function ago(sec) {
+  const m = Math.max(0, Math.round((Date.now() / 1000 - sec) / 60));
+  return m < 1 ? 'только что' : `${m} мин назад`;
+}
+
+// status.json кладёт рядом с сайтом GitHub раз в ~10 минут: там все игроки и статистика.
+// Он лежит на этом же адресе, поэтому открывается и там, где режут сторонние сервисы.
+async function fetchOwnStatus() {
+  try {
+    const r = await fetch(`status.json?t=${Math.floor(Date.now() / 60000)}`, { cache: 'no-store' });
+    if (!r.ok) return null;
+    const j = await r.json();
+    if (!j.at || Date.now() / 1000 - j.at > 40 * 60) return null; // старше 40 минут — не доверяем
+    return j;
+  } catch { return null; }
+}
+
+let statsData = null;
 async function fetchStatus() {
+  const own = await fetchOwnStatus();
+  if (own) {
+    statsData = own;
+    renderStats();
+    return own.online ? { online: true, count: own.count, max: own.max, names: own.players || [], at: own.at } : { online: false };
+  }
+  renderStats();
   for (const src of SOURCES) {
     try {
       const ctrl = new AbortController();
@@ -139,6 +165,56 @@ async function fetchStatus() {
   }
   return null;
 }
+
+// ---------- Статистика: убийства игроков и смерти (из мода dvizhstats через status.json) ----------
+let statsSort = 'kills';
+let statsAll = false;
+const STATS_SHORT = 15;
+
+function renderStats() {
+  const body = $('#statsBody');
+  const more = $('#statsMore');
+  body.innerHTML = '';
+  more.hidden = true;
+  const empty = (t) => { const p = document.createElement('p'); p.className = 'st-empty'; p.textContent = t; body.append(p); };
+  const s = statsData;
+  if (!s) { empty('Статистика не загрузилась. Она видна и в самом лаунчере — кнопка «Статистика».'); return; }
+  if (!s.stats) { empty('Статистика появится после ближайшего обновления сервера.'); return; }
+  if (s.statsAt) $('#statsUpd').textContent = `Обновлено ${ago(s.statsAt)}. Обновляется раз в 10 минут.`;
+  const key = statsSort === 'kills' ? 1 : 2;
+  const other = key === 1 ? 2 : 1;
+  const ranked = [...s.stats].sort((a, b) => b[key] - a[key] || b[other] - a[other] || a[0].localeCompare(b[0]))
+    .map((r, i) => ({ place: i + 1, name: r[0], kills: r[1], deaths: r[2] }));
+  const q = $('#statsFind').value.trim().toLowerCase();
+  let rows = q ? ranked.filter((r) => r.name.toLowerCase().includes(q)) : ranked;
+  if (!rows.length) { empty(q ? 'Такого ника в статистике нет.' : 'Пока никто никого не убил и никто не умер.'); return; }
+  if (!q && !statsAll && rows.length > STATS_SHORT) {
+    more.hidden = false;
+    more.textContent = `Показать всех (${rows.length})`;
+    rows = rows.slice(0, STATS_SHORT);
+  }
+  for (const r of rows) {
+    const row = document.createElement('div');
+    row.className = 'st-row' + (r.place <= 3 && (key === 1 ? r.kills : r.deaths) > 0 ? ' top' : '');
+    row.setAttribute('role', 'row');
+    const cell = (t, cls) => { const c = document.createElement('span'); c.textContent = t; if (cls) c.className = cls; row.append(c); };
+    cell(String(r.place), 'n');
+    cell(r.name, 'who');
+    cell(String(r.kills), r.kills ? '' : 'zero');
+    cell(String(r.deaths), r.deaths ? '' : 'zero');
+    body.append(row);
+  }
+}
+
+$('#statsSort').addEventListener('click', (e) => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  statsSort = b.dataset.v;
+  $('#statsSort').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
+  renderStats();
+});
+$('#statsFind').addEventListener('input', renderStats);
+$('#statsMore').addEventListener('click', () => { statsAll = true; renderStats(); });
 
 async function tick() {
   render(await fetchStatus());
