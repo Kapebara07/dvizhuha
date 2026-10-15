@@ -65,19 +65,21 @@ $('#download').addEventListener('click', (e) => {
 osDialog.addEventListener('click', (e) => { if (e.target === osDialog) osDialog.close(); });
 osDialog.querySelectorAll('.os-btn').forEach((a) => a.addEventListener('click', () => setTimeout(() => osDialog.close(), 300)));
 
-// ---------- Поддержать сервер: своё окно, сама оплата — на Boosty ----------
+// ---------- Поддержать сервер: своё окно, сама оплата — форма ЮMoney ----------
 const donateDialog = $('#donateDialog');
-const boostyRaw = (donateDialog.dataset.boosty || '').trim().replace(/\/+$/, '');
-// Пока ссылки на Boosty нет, окно работает, но вместо оплаты пишет, что она ещё не подключена.
-const boosty = /^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boostyRaw) ? boostyRaw : '';
+// Пока номера кошелька нет, окно работает, но вместо оплаты пишет, что она ещё не подключена.
+const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim()) ? donateDialog.dataset.yoomoney.trim() : '';
 {
   const perk = (donateDialog.dataset.perk || '').trim();
   if (perk) { $('#dnPerk').textContent = perk; $('#dnPerk').hidden = false; }
   let amount = 300;
+  let payType = 'AC';
   const NICK = /^[A-Za-z0-9_]{3,16}$/;
+  const DISCORD = /^[a-z0-9_.]{2,32}$/;
   const setAmount = (a) => {
     amount = a;
     $('#dnAmounts').querySelectorAll('button').forEach((b) => b.classList.toggle('on', Number(b.dataset.a) === a));
+    $('#dnGo').textContent = `Оплатить ${a} ₽`;
   };
   $('#dnAmounts').addEventListener('click', (e) => {
     const b = e.target.closest('button');
@@ -89,30 +91,42 @@ const boosty = /^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boostyRaw) ? boost
     const v = Math.round(Number($('#dnOwn').value));
     if (v >= 10) setAmount(v);
   });
-  $('#dnNick').addEventListener('input', () => {
-    const v = $('#dnNick').value.trim();
-    const bad = v && !NICK.test(v);
-    $('#dnNick').classList.toggle('bad', !!bad);
-    $('#dnNickHint').classList.toggle('bad', !!bad);
-    $('#dnNickHint').textContent = bad ? 'Латиница, цифры и _, от 3 до 16 знаков — как в игре.' : 'Можно не писать.';
+  $('#dnPay').addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    payType = b.dataset.p;
+    $('#dnPay').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
   });
+  const DISCORD_HINT = $('#dnDiscordHint').textContent;
+  const NICK_HINT = $('#dnNickHint').textContent;
+  const discordValue = () => $('#dnDiscord').value.trim().replace(/^@/, '').toLowerCase();
+  const check = (input, hint, ok, okText, badText) => {
+    const bad = !!input.value.trim() && !ok;
+    input.classList.toggle('bad', bad);
+    hint.classList.toggle('bad', bad);
+    hint.textContent = bad ? badText : okText;
+    return !bad;
+  };
+  const checkDiscord = () => check($('#dnDiscord'), $('#dnDiscordHint'), DISCORD.test(discordValue()), DISCORD_HINT,
+    'Имя пользователя Discord: латиница в нижнем регистре, цифры, _ и точка, от 2 до 32 знаков.');
+  const checkNick = () => check($('#dnNick'), $('#dnNickHint'), NICK.test($('#dnNick').value.trim()), NICK_HINT,
+    'Латиница, цифры и _, от 3 до 16 знаков — как в игре.');
+  $('#dnDiscord').addEventListener('input', checkDiscord);
+  $('#dnNick').addEventListener('input', checkNick);
   $('#dnGo').addEventListener('click', () => {
-    const nick = $('#dnNick').value.trim();
-    if (nick && !NICK.test(nick)) { $('#dnNick').focus(); return; }
-    if (!boosty) {
+    if (!checkDiscord()) { $('#dnDiscord').focus(); return; }
+    if (!checkNick()) { $('#dnNick').focus(); return; }
+    if (!wallet) {
       $('#dnError').hidden = false;
       return;
     }
-    const discord = $('#dnDiscord').value.trim().replace(/^@/, '').replace(/\s+/g, '').slice(0, 32);
-    const msg = [nick && `Ник: ${nick}`, discord && `Discord: ${discord}`].filter(Boolean).join(' · ');
-    const url = `${boosty}/donate`;
-    // Копируем, пока вкладка в фокусе (потом фокус уйдёт на Boosty и браузер не даст), ждать не нужно.
-    if (msg) navigator.clipboard?.writeText(msg).catch(() => { /* текст всё равно показан ниже */ });
-    window.open(url, '_blank', 'noopener');
-    $('#dnSum').textContent = `${amount} ₽`;
-    $('#dnMsg').textContent = msg;
-    $('#dnMsgStep').hidden = !msg;
-    $('#dnLink').href = url;
+    // Метка до 64 знаков: «dvz|discord|ник» — максимум 4 + 32 + 1 + 16.
+    const f = $('#dnYoo');
+    f.elements.receiver.value = wallet;
+    f.elements.paymentType.value = payType;
+    f.elements.sum.value = String(amount);
+    f.elements.label.value = `dvz|${discordValue()}|${$('#dnNick').value.trim()}`;
+    f.submit();
     $('#dnForm').hidden = true;
     $('#dnAfter').hidden = false;
   });
@@ -123,9 +137,13 @@ const boosty = /^https:\/\/boosty\.to\/[A-Za-z0-9_.-]+$/.test(boostyRaw) ? boost
     $('#dnForm').hidden = false;
     $('#dnError').hidden = true;
     if (typeof donateDialog.showModal === 'function') donateDialog.showModal();
-    else if (boosty) window.open(`${boosty}/donate`, '_blank', 'noopener');
   });
   donateDialog.addEventListener('click', (e) => { if (e.target === donateDialog) donateDialog.close(); });
+  // ЮMoney после оплаты возвращает на сайт с ?donated=1.
+  if (new URLSearchParams(location.search).has('donated')) {
+    history.replaceState(null, '', location.pathname + location.hash);
+    setTimeout(() => toast('Спасибо за поддержку сервера!'), 400);
+  }
 }
 
 const mirror = $('#mirror');

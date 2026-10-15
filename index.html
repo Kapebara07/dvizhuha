@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Только свои файлы и два сервиса онлайна: чужой скрипт на страницу не встроить -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.mcstatus.io https://api.mcsrvstat.us; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.mcstatus.io https://api.mcsrvstat.us; base-uri 'none'; form-action https://yoomoney.ru; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
   <title>Движуха — лаунчер сервера</title>
   <meta name="description" content="Лаунчер сервера Движуха на Create Aeronautics: сам ставит Java, Minecraft, NeoForge и сборку. Аккаунт не нужен.">
@@ -15,7 +15,7 @@
   <link rel="icon" href="img/favicon.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="preload" href="fonts/AlumniSans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20261015a">
+  <link rel="stylesheet" href="style.css?v=20261015b">
 </head>
 <body>
 
@@ -243,14 +243,15 @@
   </div>
 </dialog>
 
-<!-- Поддержать сервер: своё окно, оплата на Boosty.
-     data-boosty — адрес страницы на Boosty (пусто — окно пишет, что оплата пока не подключена),
-     data-perk — что получает спонсор (пусто — строка не показывается). -->
+<!-- Поддержать сервер: своё окно, оплата — форма ЮMoney (данные карты вводят на yoomoney.ru, не у нас).
+     data-yoomoney — номер кошелька-получателя (пусто — окно пишет, что оплата пока не подключена),
+     data-perk — что получает спонсор (пусто — строка не показывается).
+     Метка платежа «dvz|ник в Discord|ник в игре» — по ней серверный мод DvizhDonate выдаёт роль. -->
 <dialog class="os-dialog donate-dialog" id="donateDialog" aria-labelledby="donateTitle"
-        data-boosty="" data-perk="От 100 ₽ — роль «Спонсор» в нашем Discord. Выдаём вручную, обычно в течение дня.">
+        data-yoomoney="4100119658152383" data-perk="От 100 ₽ — роль «Спонсор» в нашем Discord. Донаты одного человека складываются.">
   <form method="dialog" class="os-close"><button aria-label="Закрыть">✕</button></form>
   <h2 id="donateTitle">Поддержать сервер</h2>
-  <p class="dn-lead">Деньги идут на аренду сервера. Оплата проходит на Boosty — номер карты вводишь там, не у нас.</p>
+  <p class="dn-lead">Деньги идут на аренду сервера. Оплата проходит через ЮMoney — данные карты вводишь там, не у нас.</p>
   <div class="dn-step" id="dnForm">
     <span class="dn-k">сумма</span>
     <div class="dn-amounts" id="dnAmounts" role="group" aria-label="Сумма">
@@ -260,29 +261,37 @@
       <button type="button" data-a="1000">1000 ₽</button>
       <label class="dn-own"><input type="number" id="dnOwn" min="10" max="100000" step="10" placeholder="своя" inputmode="numeric"> ₽</label>
     </div>
-    <span class="dn-k">ник в игре</span>
-    <input type="text" id="dnNick" maxlength="16" placeholder="например, Kapebara" spellcheck="false" autocomplete="off">
-    <p class="dn-hint" id="dnNickHint">Можно не писать.</p>
+    <span class="dn-k">чем платить</span>
+    <div class="dn-amounts" id="dnPay" role="group" aria-label="Способ оплаты">
+      <button type="button" data-p="AC" class="on">банковской картой</button>
+      <button type="button" data-p="PC">кошельком ЮMoney</button>
+    </div>
     <span class="dn-k">ник в Discord</span>
     <input type="text" id="dnDiscord" maxlength="32" placeholder="например, kapebara" spellcheck="false" autocomplete="off">
-    <p class="dn-hint">Нужен, чтобы выдать роль «Спонсор» в нашем Discord.</p>
+    <p class="dn-hint" id="dnDiscordHint">Имя пользователя (не отображаемое имя) — по нему выдаём роль «Спонсор».</p>
+    <span class="dn-k">ник в игре</span>
+    <input type="text" id="dnNick" maxlength="16" placeholder="например, Kapebara" spellcheck="false" autocomplete="off">
+    <p class="dn-hint" id="dnNickHint">Можно не писать. Если напишешь — скажем спасибо в игре.</p>
     <p class="dn-perk" id="dnPerk" hidden></p>
-    <button type="button" class="dn-go" id="dnGo">Перейти к оплате на Boosty</button>
+    <button type="button" class="dn-go" id="dnGo">Оплатить 300 ₽</button>
     <p class="dn-error" id="dnError" role="alert" hidden>Оплата пока не подключена — загляни чуть позже.</p>
   </div>
   <div class="dn-step" id="dnAfter" hidden>
-    <p class="dn-done">Boosty открылся в новой вкладке. Там осталось:</p>
-    <ol class="dn-list">
-      <li>Ввести сумму <b id="dnSum">300 ₽</b>.</li>
-      <li id="dnMsgStep">Вставить в сообщение к донату текст, мы его уже скопировали: <code class="mono" id="dnMsg"></code></li>
-      <li>Оплатить картой.</li>
-    </ol>
-    <p class="dn-hint">Если вкладка не открылась — <a id="dnLink" href="#" target="_blank" rel="noopener noreferrer">открой Boosty вручную</a>.</p>
+    <p class="dn-done">Страница оплаты ЮMoney открылась в новой вкладке.</p>
+    <p class="dn-hint">Там вводишь данные карты и подтверждаешь платёж. Если вкладка не открылась — разреши сайту всплывающие окна и нажми ещё раз.</p>
     <button type="button" class="tiny" id="dnBack">Изменить сумму или ник</button>
   </div>
+  <form id="dnYoo" method="POST" action="https://yoomoney.ru/quickpay/confirm" target="_blank" accept-charset="utf-8" hidden>
+    <input type="hidden" name="receiver">
+    <input type="hidden" name="quickpay-form" value="button">
+    <input type="hidden" name="paymentType">
+    <input type="hidden" name="sum">
+    <input type="hidden" name="label">
+    <input type="hidden" name="successURL" value="https://dvizhuha-mc.github.io/?donated=1">
+  </form>
 </dialog>
 
 <div class="toast" id="toast" role="status"></div>
-<script src="app.js?v=20261015a"></script>
+<script src="app.js?v=20261015b"></script>
 </body>
 </html>
