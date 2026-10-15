@@ -35,7 +35,7 @@ jobs:
       - name: Собираю сайт
         run: |
           mkdir -p _site
-          cp -r index.html map.html style.css app.js update.json status.json fonts img vendor _site/ 2>/dev/null || true
+          cp -r index.html map.html style.css app.js update.json status.json fonts img vendor yoomoney _site/ 2>/dev/null || true
           ls -la _site
       - uses: actions/upload-pages-artifact@v3
         with:
