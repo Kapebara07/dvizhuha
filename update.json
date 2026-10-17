@@ -1,31 +1,31 @@
 {
-  "version": "1.4.0",
-  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-Setup.exe",
-  "size": 206890787,
-  "sha256": "497f2ca011bb1d154dd30d8a8bdf7f914431c101f99038f04d7d11a536003f0b",
-  "notes": "Друзья: кнопка «Друзья» в лаунчере, заявки и вход в одиночный мир друга в один клик.",
-  "signature": "Ni2iRnfsEWq448rJYhsKRtYNMjTbt4yvrEkvF5gnTCLMk09MPmS7/OazEIgoVR+6yZkxflsdIQWbunnIGrpyBw==",
+  "version": "1.4.1",
+  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.1/Dvizhuha-Launcher-Setup.exe",
+  "size": 206888715,
+  "sha256": "a1b34ed43624d1b41f8a4b42fd7ae689ad52f8a7ed03e90c1e18d22caf2b2c7b",
+  "notes": "- Миры друзей прямо в Minecraft: когда друг открыл одиночный мир, в «Сетевой игре» сверху появляется «Мир друга <ник>» — заходи двойным кликом, без лаунчера.\n- Кнопка «Присоединиться» теперь видна у всех друзей: серая, пока у друга нет открытого мира, и яркая, когда можно зайти.\n- Открытые миры друзей появляются быстрее: лаунчер проверяет их раз в 10 секунд (раньше — раз в минуту), даже когда свёрнут.",
+  "signature": "tkzPjB+q61I1bwSLZRV1QX2oPLAnszzFOG88H6VCccSY7LlhobreNjMALcq+joVwmZJNTZmCoKYUcwR51PfMCg==",
   "assets": {
     "win-x64": {
-      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-Setup.exe",
-      "size": 206890787,
-      "sha256": "497f2ca011bb1d154dd30d8a8bdf7f914431c101f99038f04d7d11a536003f0b"
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.1/Dvizhuha-Launcher-Setup.exe",
+      "size": 206888715,
+      "sha256": "a1b34ed43624d1b41f8a4b42fd7ae689ad52f8a7ed03e90c1e18d22caf2b2c7b"
     },
     "linux-x64": {
-      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-x86_64.AppImage",
-      "size": 221624237,
-      "sha256": "8eaee8df91e6568915741310a2185fe4d43438b3302a3971e7a117515f27f613"
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.1/Dvizhuha-Launcher-x86_64.AppImage",
+      "size": 221624286,
+      "sha256": "91fcf4b2c79ddba6fa569ae9a698fafe943419dd4cfd4354ea098e4576ad0dc8"
     },
     "mac-arm64": {
-      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-mac-arm64.zip",
-      "size": 224319828,
-      "sha256": "30f04aa15fe12ba7d0dfa9908a6ef0d4400497339ca41e22a440d57e038a6be7"
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.1/Dvizhuha-Launcher-mac-arm64.zip",
+      "size": 224320306,
+      "sha256": "6d3c97fa7221f83c23de525387b5def140e240d491a015a32d859296cd67aa74"
     },
     "mac-x64": {
-      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-mac-x64.zip",
-      "size": 229943690,
-      "sha256": "cd941ca73ef6f07b1ec15294d0a3683c239dc606f617ed3b8e9a6d2ca7336bc4"
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.1/Dvizhuha-Launcher-mac-x64.zip",
+      "size": 229944169,
+      "sha256": "cf55b2d3dd3f03a3d91d3cf50ceecb2464bc21c7d547d2a09c6009a528d42a2e"
     }
   },
-  "assetsSignature": "BY8lTwC2bShWDC8nIHAwSMGhkHa4omfRzulsYAbtDTj99YarlUPI/pJBgSff2P5O7pglJI6tkx0aBt0X/tpWBg=="
+  "assetsSignature": "PDree5Uzm9nIlkgA/80ri2akknm0HIPIKcuM6mwJYQJGxUcnPcUhMWhm4n5Z0pOxqogY47uTyCoGhKSlXx3GDA=="
 }
