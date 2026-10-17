@@ -1,31 +1,31 @@
 {
-  "version": "1.3.2",
-  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.2/Dvizhuha-Launcher-Setup.exe",
-  "size": 206883828,
-  "sha256": "05fd394fc71cf6f32d7278211aea4148f4808fae1a7def6054c41f49ac846179",
-  "notes": "Папку игры можно перенести на другой диск или в другое место: Настройки → папка игры → «Перенести…».",
-  "signature": "OAooQIFJnIoPfGN/uiOFAiM2G0iuahRXL6RqBsvy8KLlbsaN1NyWbYu3oc3TCYr61hjSPAB0pY6/QtU0GvyRDA==",
+  "version": "1.4.0",
+  "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-Setup.exe",
+  "size": 206890787,
+  "sha256": "497f2ca011bb1d154dd30d8a8bdf7f914431c101f99038f04d7d11a536003f0b",
+  "notes": "Друзья: кнопка «Друзья» в лаунчере, заявки и вход в одиночный мир друга в один клик.",
+  "signature": "Ni2iRnfsEWq448rJYhsKRtYNMjTbt4yvrEkvF5gnTCLMk09MPmS7/OazEIgoVR+6yZkxflsdIQWbunnIGrpyBw==",
   "assets": {
     "win-x64": {
-      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.2/Dvizhuha-Launcher-Setup.exe",
-      "size": 206883828,
-      "sha256": "05fd394fc71cf6f32d7278211aea4148f4808fae1a7def6054c41f49ac846179"
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-Setup.exe",
+      "size": 206890787,
+      "sha256": "497f2ca011bb1d154dd30d8a8bdf7f914431c101f99038f04d7d11a536003f0b"
     },
     "linux-x64": {
-      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.2/Dvizhuha-Launcher-x86_64.AppImage",
-      "size": 221615950,
-      "sha256": "d37c92ab743a2c3292d3630630f6c652f1fec4fd88039a870fe46c474fcdb39f"
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-x86_64.AppImage",
+      "size": 221624237,
+      "sha256": "8eaee8df91e6568915741310a2185fe4d43438b3302a3971e7a117515f27f613"
     },
     "mac-arm64": {
-      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.2/Dvizhuha-Launcher-mac-arm64.zip",
-      "size": 224315475,
-      "sha256": "b03c220be73799eb19314d4e4bffa07eae65c6d7de3abf2c49370d66a65260a7"
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-mac-arm64.zip",
+      "size": 224319828,
+      "sha256": "30f04aa15fe12ba7d0dfa9908a6ef0d4400497339ca41e22a440d57e038a6be7"
     },
     "mac-x64": {
-      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.3.2/Dvizhuha-Launcher-mac-x64.zip",
-      "size": 229939341,
-      "sha256": "19ad6a725fc91f596bfd14798e49dd93db58d3d982a204de06c5c3ffc04aa7ee"
+      "url": "https://github.com/dvizhuha-mc/dvizhuha-mc.github.io/releases/download/v1.4.0/Dvizhuha-Launcher-mac-x64.zip",
+      "size": 229943690,
+      "sha256": "cd941ca73ef6f07b1ec15294d0a3683c239dc606f617ed3b8e9a6d2ca7336bc4"
     }
   },
-  "assetsSignature": "7Qh7FgFiwaWUn7NTJ2zOM/77NAuyib9sT5w5bg6IWH0kMy+RVN0KaXQ8GWKlHhhgfrf6kzSMtAhMtjnOlKy2BQ=="
+  "assetsSignature": "BY8lTwC2bShWDC8nIHAwSMGhkHa4omfRzulsYAbtDTj99YarlUPI/pJBgSff2P5O7pglJI6tkx0aBt0X/tpWBg=="
 }
