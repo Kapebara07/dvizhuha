@@ -169,6 +169,7 @@ h2 { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 48px; 
 .dn-hint { margin-top: 6px; color: var(--paper-mute); font-size: 13.5px; }
 .dn-hint.bad { color: #a3241c; }
 .dn-hint a { color: var(--brass-dark); }
+.dn-hint code { padding: 1px 5px; background: #f4eedf; border: 1px solid #bfb294; border-radius: 2px; color: var(--ink); font: 13px 'PT Mono', monospace; overflow-wrap: anywhere; }
 .dn-perk { margin-top: 14px; padding: 10px 12px; border-left: 3px solid var(--brass); background: #f4eedf; color: var(--paper-ink); font-size: 14.5px; }
 .dn-go-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .dn-go-row .dn-go { flex: 1 1 200px; margin-top: 0; }

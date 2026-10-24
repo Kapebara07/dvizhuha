@@ -171,11 +171,11 @@ function render() {
   const events = (d.events || []).slice().sort((a, b) => ts(b.t) - ts(a.t));
   const donors = d.donors || [];
 
-  $('#updated').textContent = `Данные сервера собраны ${msk(feed.generated)} МСК (${ago(feed.generated)}). Сайт получает их примерно раз в 10 минут.`;
+  $('#updated').textContent = `Данные сервера собраны ${msk(feed.generated)} МСК (${ago(feed.generated)}). На сайт они попадают при его сборке на GitHub — это бывает раз в несколько часов, поэтому свежие донаты могут появиться не сразу.`;
 
   const warns = [];
   if (!feed.donate) warns.push('Мод донатов (DvizhDonate) ещё не отдал данных — донаты не видны.');
-  if (Date.now() - feed.generated > 60 * 60000) warns.push('Данные старше часа — сервер не отвечал при последних сборках сайта.');
+  if (Date.now() - feed.generated > 60 * 60000) warns.push('Данные старше часа: сайт давно не пересобирался (расписание GitHub ненадёжное) или сервер не отвечал. Свежее: GitHub → Actions → «Сайт и онлайн сервера» → Run workflow.');
   const src = d.sources || {};
   for (const k of ['da', 'donatex', 'yoomoney']) {
     if (src[k] && src[k].configured && src[k].error) warns.push(`${SOURCE[k]}: ${src[k].error}`);
