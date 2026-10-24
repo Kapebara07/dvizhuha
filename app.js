@@ -163,7 +163,7 @@ const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim
   };
   $('#dnGo').addEventListener('click', () => go('da'));
   $('#dnGoX').addEventListener('click', () => go('dx'));
-  // «Ник: Kapebara» — формат, который разбирает DvizhDonate (parseMessage); Discord по нику находит бот.
+  // «Ник: Steve» — формат, который разбирает DvizhDonate (parseMessage); Discord по нику находит бот.
   const donateMessage = () => ($('#dnNick').value.trim() ? `Ник: ${$('#dnNick').value.trim()}` : '');
   const copyText = (text) => {
     try { navigator.clipboard.writeText(text).catch(() => {}); } catch { /* без буфера покажем текст на экране */ }
