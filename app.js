@@ -249,30 +249,24 @@ function render(s) {
 
 function ago(sec) {
   const m = Math.max(0, Math.round((Date.now() / 1000 - sec) / 60));
-  return m < 1 ? 'только что' : `${m} мин назад`;
+  if (m < 1) return 'только что';
+  if (m < 90) return `${m} мин назад`;
+  return `${Math.round(m / 60)} ч назад`;
 }
 
-// status.json кладёт рядом с сайтом GitHub раз в ~10 минут: там все игроки и статистика.
-// Он лежит на этом же адресе, поэтому открывается и там, где режут сторонние сервисы.
+// status.json кладёт рядом с сайтом GitHub при сборке сайта — по расписанию это бывает раз в несколько часов, а не раз в 10 минут.
+// В нём все игроки и статистика, он открывается и там, где режут сторонние сервисы, но может сильно отставать.
 async function fetchOwnStatus() {
   try {
     const r = await fetch(`status.json?t=${Math.floor(Date.now() / 60000)}`, { cache: 'no-store' });
     if (!r.ok) return null;
     const j = await r.json();
-    if (!j.at || Date.now() / 1000 - j.at > 40 * 60) return null; // старше 40 минут — не доверяем
-    return j;
+    return j.at ? j : null;
   } catch { return null; }
 }
 
-let statsData = null;
-async function fetchStatus() {
-  const own = await fetchOwnStatus();
-  if (own) {
-    statsData = own;
-    renderStats();
-    return own.online ? { online: true, count: own.count, max: own.max, names: own.players || [], at: own.at } : { online: false };
-  }
-  renderStats();
+// Число игроков и ники в данный момент — у публичных сервисов (они пингуют сервер сами, свежее файла со сборки).
+async function fetchLive() {
   for (const src of SOURCES) {
     try {
       const ctrl = new AbortController();
@@ -283,6 +277,24 @@ async function fetchStatus() {
       return src.read(await r.json());
     } catch { /* следующий источник */ }
   }
+  return null;
+}
+
+const OWN_FRESH = 3 * 60;        // файл не старше 3 минут — доверяем ему целиком
+const OWN_USABLE = 24 * 3600;    // статистику и «последнее известное» показываем, пока файлу не больше суток
+
+let statsData = null;
+async function fetchStatus() {
+  const own = await fetchOwnStatus();
+  const age = own ? Date.now() / 1000 - own.at : Infinity;
+  if (own && age < OWN_USABLE) statsData = own;
+  renderStats();
+  const fromOwn = () => (own.online ? { online: true, count: own.count, max: own.max, names: own.players || [], at: own.at } : { online: false });
+  if (own && age < OWN_FRESH) return fromOwn();
+  const live = await fetchLive();
+  if (live) return live;
+  // сторонние сервисы недоступны (например, режутся) — лучше последнее известное с пометкой, чем пустое табло
+  if (own && age < OWN_USABLE) return fromOwn();
   return null;
 }
 
@@ -300,7 +312,7 @@ function renderStats() {
   const s = statsData;
   if (!s) { empty('Статистика не загрузилась. Она видна и в самом лаунчере — кнопка «Статистика».'); return; }
   if (!s.stats) { empty('Статистика появится после ближайшего обновления сервера.'); return; }
-  if (s.statsAt) $('#statsUpd').textContent = `Обновлено ${ago(s.statsAt)}. Обновляется раз в 10 минут.`;
+  if (s.statsAt) $('#statsUpd').textContent = `Обновлено ${ago(s.statsAt)}. Статистика обновляется при сборке сайта, это бывает раз в несколько часов.`;
   const key = statsSort === 'kills' ? 1 : 2;
   const other = key === 1 ? 2 : 1;
   const ranked = [...s.stats].sort((a, b) => b[key] - a[key] || b[other] - a[other] || a[0].localeCompare(b[0]))
