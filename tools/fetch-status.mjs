@@ -3,8 +3,8 @@
 import net from 'node:net';
 import { writeFileSync } from 'node:fs';
 
-const HOST = '185.137.233.193';
-const PORT = 25661;
+const HOST = '45.157.232.7';
+const PORT = 32331;
 
 function varint(n) {
   const out = [];

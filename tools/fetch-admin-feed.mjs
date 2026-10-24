@@ -6,7 +6,7 @@ import http from 'node:http';
 import https from 'node:https';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-const SERVER = { host: '185.137.233.193', port: 25661, path: '/dvz/admin/feed' };
+const SERVER = { host: '45.157.232.7', port: 32331, path: '/dvz/admin/feed' };
 const LIVE = 'https://dvizhuha-mc.github.io/admin/feed.json';
 
 function get(mod, opts, timeout) {
