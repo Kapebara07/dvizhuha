@@ -86,7 +86,6 @@ const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim
   let amount = 300;
   let payType = 'AC';
   const NICK = /^[A-Za-z0-9_]{3,16}$/;
-  const DISCORD = /^[a-z0-9_.]{2,32}$/;
   const setAmount = (a) => {
     amount = a;
     $('#dnAmounts').querySelectorAll('button').forEach((b) => b.classList.toggle('on', Number(b.dataset.a) === a));
@@ -108,9 +107,7 @@ const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim
     payType = b.dataset.p;
     $('#dnPay').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
   });
-  const DISCORD_HINT = $('#dnDiscordHint').textContent;
   const NICK_HINT = $('#dnNickHint').textContent;
-  const discordValue = () => $('#dnDiscord').value.trim().replace(/^@/, '').toLowerCase();
   const check = (input, hint, ok, okText, badText) => {
     const bad = !!input.value.trim() && !ok;
     input.classList.toggle('bad', bad);
@@ -118,26 +115,32 @@ const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim
     hint.textContent = bad ? badText : okText;
     return !bad;
   };
-  const checkDiscord = () => check($('#dnDiscord'), $('#dnDiscordHint'), DISCORD.test(discordValue()), DISCORD_HINT,
-    'Имя пользователя Discord: латиница в нижнем регистре, цифры, _ и точка, от 2 до 32 знаков.');
-  const checkNick = () => check($('#dnNick'), $('#dnNickHint'), NICK.test($('#dnNick').value.trim()), NICK_HINT,
-    'Латиница, цифры и _, от 3 до 16 знаков — как в игре.');
-  $('#dnDiscord').addEventListener('input', checkDiscord);
-  $('#dnNick').addEventListener('input', checkNick);
+  // Ник нужен: по нему бот находит Discord-аккаунт игрока (SingleWar хранит связь ник ⇄ Discord).
+  const checkNick = (required) => {
+    const v = $('#dnNick').value.trim();
+    if (required && !v) {
+      $('#dnNick').classList.add('bad');
+      $('#dnNickHint').classList.add('bad');
+      $('#dnNickHint').textContent = 'Впиши свой ник — по нему мы найдём тебя в Discord и выдадим роль.';
+      return false;
+    }
+    return check($('#dnNick'), $('#dnNickHint'), NICK.test(v), NICK_HINT,
+      'Латиница, цифры и _, от 3 до 16 знаков — как в игре.');
+  };
+  $('#dnNick').addEventListener('input', () => checkNick(false));
   const go = (service) => {
-    if (!checkDiscord()) { $('#dnDiscord').focus(); return; }
-    if (!checkNick()) { $('#dnNick').focus(); return; }
+    if (!checkNick(true)) { $('#dnNick').focus(); return; }
     if (useYoo) {
       if (!wallet) {
         $('#dnError').hidden = false;
         return;
       }
-      // Метка до 64 знаков: «dvz|discord|ник» — максимум 4 + 32 + 1 + 16.
+      // Метка до 64 знаков: «dvz||ник» (Discord-имя больше не спрашиваем — аккаунт находит бот по нику).
       const f = $('#dnYoo');
       f.elements.receiver.value = wallet;
       f.elements.paymentType.value = payType;
       f.elements.sum.value = String(amount);
-      f.elements.label.value = `dvz|${discordValue()}|${$('#dnNick').value.trim()}`;
+      f.elements.label.value = `dvz||${$('#dnNick').value.trim()}`;
       f.submit();
     } else {
       const url = service === 'dx' ? dxUrl : daUrl;
@@ -160,11 +163,8 @@ const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim
   };
   $('#dnGo').addEventListener('click', () => go('da'));
   $('#dnGoX').addEventListener('click', () => go('dx'));
-  // «Ник: Kapebara · Discord: kapebara» — формат, который разбирает DvizhDonate (parseMessage).
-  const donateMessage = () => [
-    $('#dnNick').value.trim() && `Ник: ${$('#dnNick').value.trim()}`,
-    discordValue() && `Discord: ${discordValue()}`,
-  ].filter(Boolean).join(' · ');
+  // «Ник: Kapebara» — формат, который разбирает DvizhDonate (parseMessage); Discord по нику находит бот.
+  const donateMessage = () => ($('#dnNick').value.trim() ? `Ник: ${$('#dnNick').value.trim()}` : '');
   const copyText = (text) => {
     try { navigator.clipboard.writeText(text).catch(() => {}); } catch { /* без буфера покажем текст на экране */ }
   };

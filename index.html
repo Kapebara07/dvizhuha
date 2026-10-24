@@ -15,7 +15,7 @@
   <link rel="icon" href="img/favicon.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="preload" href="fonts/AlumniSans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20261024">
+  <link rel="stylesheet" href="style.css?v=20261025">
 </head>
 <body>
 
@@ -270,12 +270,9 @@
       <button type="button" data-p="AC" class="on">банковской картой</button>
       <button type="button" data-p="PC">кошельком ЮMoney</button>
     </div>
-    <span class="dn-k">ник в Discord</span>
-    <input type="text" id="dnDiscord" maxlength="32" placeholder="например, kapebara" spellcheck="false" autocomplete="off">
-    <p class="dn-hint" id="dnDiscordHint">Твоё имя пользователя в Discord: Настройки → «Моя учётная запись» → «Имя пользователя». Это не отображаемое имя и не ник на сервере. Латиница в нижнем регистре, цифры, «_» и «.», без пробелов. Собачку «@» ставить не нужно. Ты должен быть на нашем Discord-сервере, иначе роль выдать не получится.</p>
-    <span class="dn-k">ник в игре</span>
+    <span class="dn-k">твой ник в игре</span>
     <input type="text" id="dnNick" maxlength="16" placeholder="например, Kapebara" spellcheck="false" autocomplete="off">
-    <p class="dn-hint" id="dnNickHint">Твой ник в Minecraft: латиница, цифры и «_», от 3 до 16 знаков, как в игре. Можно не писать — тогда «спасибо» скажем по имени, которое укажешь при оплате.</p>
+    <p class="dn-hint" id="dnNickHint">Впиши свой ник в Minecraft — такой же, как у тебя на сервере: латиница, цифры и «_», от 3 до 16 знаков. По нему бот сам найдёт твой аккаунт в Discord и выдаст роль «Спонсор», Discord-имя вписывать не нужно. Ты должен быть зарегистрирован на нашем Discord-сервере.</p>
     <p class="dn-perk" id="dnPerk" hidden></p>
     <div class="dn-go-row">
       <button type="button" class="dn-go" id="dnGo">Оплатить 300 ₽</button>
@@ -289,8 +286,8 @@
       <p class="dn-hint">Там выбираешь сумму и способ оплаты. <b>В поле «Сообщение» вставь (Ctrl+V) этот текст</b> — по нему мы находим тебя и выдаём роль «Спонсор»:</p>
       <code class="dn-msg" id="dnMsg"></code>
       <button type="button" class="tiny" id="dnCopy">Скопировать ещё раз</button>
-      <p class="dn-hint">Вставь строку <b>целиком</b>, ничего в ней не меняя. Если платишь не через это окно, впиши в «Сообщение» сам в таком же виде: <code>Ник: твой_ник · Discord: твоё_имя</code>. Собачку «@» ставить не нужно.</p>
-      <p class="dn-hint">«Спасибо» от бота в Discord — за любой донат. Роль «Спонсор» бот выдаёт, когда сумма твоих донатов от 100 ₽ и он нашёл тебя на сервере по имени пользователя.</p>
+      <p class="dn-hint">Вставь строку <b>целиком</b>, ничего в ней не меняя. Если платишь не через это окно, впиши в «Сообщение» сам: <code>Ник: твой_ник</code>.</p>
+      <p class="dn-hint">«Спасибо» от бота в Discord — за любой донат. Роль «Спонсор» бот выдаёт, когда сумма твоих донатов от 100 ₽ и он нашёл тебя по нику среди зарегистрированных на нашем Discord-сервере.</p>
       <p class="dn-hint">Если вкладка не открылась — разреши сайту всплывающие окна и нажми ещё раз.</p>
     </div>
     <div class="dn-yoo">
@@ -310,6 +307,6 @@
 </dialog>
 
 <div class="toast" id="toast" role="status"></div>
-<script src="app.js?v=20261024"></script>
+<script src="app.js?v=20261025"></script>
 </body>
 </html>
