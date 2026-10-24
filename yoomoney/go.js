@@ -7,11 +7,11 @@ history.replaceState(null, '', location.pathname); // не оставлять к
 if (error) {
   msg.textContent = error === 'access_denied'
     ? 'Доступ не выдан — нажата кнопка «Отказать». Запусти скрипт ещё раз.'
-    : `ЮMoney вернул ошибку: ${error}. Запусти скрипт ещё раз.`;
-} else if (code && /^[A-Za-z0-9._~-]{8,1024}$/.test(code)) {
+    : `Сервис вернул ошибку: ${error}. Запусти скрипт ещё раз.`;
+} else if (code && /^[A-Za-z0-9._~-]{8,4096}$/.test(code)) {
   document.getElementById('code').textContent = code;
   setTimeout(() => { document.getElementById('manual').hidden = false; }, 4000);
   location.replace(`http://127.0.0.1:53682/?code=${encodeURIComponent(code)}`);
 } else {
-  msg.textContent = 'Эта страница нужна только при подключении ЮMoney к серверу.';
+  msg.textContent = 'Эта страница нужна только при подключении донатов (DonationAlerts, ЮMoney) к серверу.';
 }

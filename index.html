@@ -15,7 +15,7 @@
   <link rel="icon" href="img/favicon.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
   <link rel="preload" href="fonts/AlumniSans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20261017b">
+  <link rel="stylesheet" href="style.css?v=20261023">
 </head>
 <body>
 
@@ -243,26 +243,30 @@
   </div>
 </dialog>
 
-<!-- Поддержать сервер: своё окно, оплата — форма ЮMoney (данные карты вводят на yoomoney.ru, не у нас).
-     data-yoomoney — номер кошелька-получателя (пусто — окно пишет, что оплата пока не подключена),
-     data-perk — что получает спонсор (пусто — строка не показывается).
-     Метка платежа «dvz|ник в Discord|ник в игре» — по ней серверный мод DvizhDonate выдаёт роль. -->
+<!-- Поддержать сервер: своё окно, оплата — на странице DonationAlerts (данные карты вводят там, не у нас).
+     data-provider — da (по умолчанию) или yoomoney (старая форма Quickpay, спрятана, но не удалена).
+     data-da — адрес страницы доната https://www.donationalerts.com/r/<имя>, data-donatex — https://donatex.gg/<страница доната>
+     (какой пусто — того сервиса нет в выборе; обоих нет — окно пишет, что оплата пока не подключена),
+     data-yoomoney — номер кошелька для режима yoomoney, data-perk — что получает спонсор (пусто — строка не показывается).
+     Сообщение «Ник: … · Discord: …» окно копирует в буфер — донатер вставляет его в поле «Сообщение» на DonationAlerts,
+     по нему серверный мод DvizhDonate выдаёт роль. В режиме yoomoney то же самое уходит в метку «dvz|discord|ник». -->
 <dialog class="os-dialog donate-dialog" id="donateDialog" aria-labelledby="donateTitle"
-        data-yoomoney="4100119658152383" data-perk="От 100 ₽ — роль «Спонсор» в нашем Discord. Донаты одного человека складываются.">
+        data-provider="da" data-da="https://www.donationalerts.com/r/Silk227" data-donatex="https://donatex.gg/donate/SIlk227" data-yoomoney="4100119658152383" data-perk="От 100 ₽ — роль «Спонсор» в нашем Discord. Донаты одного человека складываются.">
   <form method="dialog" class="os-close"><button aria-label="Закрыть">✕</button></form>
   <h2 id="donateTitle">Поддержать сервер</h2>
-  <p class="dn-lead">Деньги идут на аренду сервера. Оплата проходит через ЮMoney — данные карты вводишь там, не у нас.</p>
+  <p class="dn-lead dn-da">Деньги идут на аренду сервера. Выбери сервис — DonationAlerts или DonateX: там картой или другим способом, какой он предложит. Данные карты вводишь на их странице, не у нас.</p>
+  <p class="dn-lead dn-yoo">Деньги идут на аренду сервера. Оплата проходит через ЮMoney — данные карты вводишь там, не у нас.</p>
   <div class="dn-step" id="dnForm">
-    <span class="dn-k">сумма</span>
-    <div class="dn-amounts" id="dnAmounts" role="group" aria-label="Сумма">
+    <span class="dn-k dn-yoo">сумма</span>
+    <div class="dn-amounts dn-yoo" id="dnAmounts" role="group" aria-label="Сумма">
       <button type="button" data-a="100">100 ₽</button>
       <button type="button" data-a="300" class="on">300 ₽</button>
       <button type="button" data-a="500">500 ₽</button>
       <button type="button" data-a="1000">1000 ₽</button>
       <label class="dn-own"><input type="number" id="dnOwn" min="10" max="100000" step="10" placeholder="своя" inputmode="numeric"> ₽</label>
     </div>
-    <span class="dn-k">чем платить</span>
-    <div class="dn-amounts" id="dnPay" role="group" aria-label="Способ оплаты">
+    <span class="dn-k dn-yoo">чем платить</span>
+    <div class="dn-amounts dn-yoo" id="dnPay" role="group" aria-label="Способ оплаты">
       <button type="button" data-p="AC" class="on">банковской картой</button>
       <button type="button" data-p="PC">кошельком ЮMoney</button>
     </div>
@@ -273,13 +277,25 @@
     <input type="text" id="dnNick" maxlength="16" placeholder="например, Kapebara" spellcheck="false" autocomplete="off">
     <p class="dn-hint" id="dnNickHint">Можно не писать. Если напишешь — скажем спасибо в игре.</p>
     <p class="dn-perk" id="dnPerk" hidden></p>
-    <button type="button" class="dn-go" id="dnGo">Оплатить 300 ₽</button>
+    <div class="dn-go-row">
+      <button type="button" class="dn-go" id="dnGo">Оплатить 300 ₽</button>
+      <button type="button" class="dn-go dn-da" id="dnGoX">Через DonateX</button>
+    </div>
     <p class="dn-error" id="dnError" role="alert" hidden>Оплата пока не подключена — загляни чуть позже.</p>
   </div>
   <div class="dn-step" id="dnAfter" hidden>
-    <p class="dn-done">Страница оплаты ЮMoney открылась в новой вкладке.</p>
-    <p class="dn-hint">Там вводишь данные карты и подтверждаешь платёж. Если вкладка не открылась — разреши сайту всплывающие окна и нажми ещё раз.</p>
-    <button type="button" class="tiny" id="dnBack">Изменить сумму или ник</button>
+    <div class="dn-da">
+      <p class="dn-done">Страница <span id="dnProv">оплаты</span> открылась в новой вкладке.</p>
+      <p class="dn-hint">Там выбираешь сумму и способ оплаты. <b>В поле «Сообщение» вставь (Ctrl+V) этот текст</b> — по нему мы находим тебя и выдаём роль «Спонсор»:</p>
+      <code class="dn-msg" id="dnMsg"></code>
+      <button type="button" class="tiny" id="dnCopy">Скопировать ещё раз</button>
+      <p class="dn-hint">Если вкладка не открылась — разреши сайту всплывающие окна и нажми ещё раз.</p>
+    </div>
+    <div class="dn-yoo">
+      <p class="dn-done">Страница оплаты ЮMoney открылась в новой вкладке.</p>
+      <p class="dn-hint">Там вводишь данные карты и подтверждаешь платёж. Если вкладка не открылась — разреши сайту всплывающие окна и нажми ещё раз.</p>
+    </div>
+    <button type="button" class="tiny" id="dnBack">Изменить ник</button>
   </div>
   <form id="dnYoo" method="POST" action="https://yoomoney.ru/quickpay/confirm" target="_blank" accept-charset="utf-8" hidden>
     <input type="hidden" name="receiver">
@@ -292,6 +308,6 @@
 </dialog>
 
 <div class="toast" id="toast" role="status"></div>
-<script src="app.js?v=20261017b"></script>
+<script src="app.js?v=20261023"></script>
 </body>
 </html>

@@ -32,10 +32,12 @@ jobs:
           node-version: 22
       - name: Онлайн и статистика сервера
         run: node tools/fetch-status.mjs
+      - name: Выгрузка для админ-страницы (зашифрована, секретов не нужно)
+        run: node tools/fetch-admin-feed.mjs
       - name: Собираю сайт
         run: |
           mkdir -p _site
-          cp -r index.html map.html style.css app.js update.json status.json fonts img vendor yoomoney _site/ 2>/dev/null || true
+          cp -r index.html map.html style.css app.js update.json status.json fonts img vendor yoomoney admin _site/ 2>/dev/null || true
           ls -la _site
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Только свои файлы и публичное API GitHub (счётчик скачиваний лаунчера). Данные сервера приходят зашифрованными (feed.json). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.github.com; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Движуха — штаб</title>
+  <meta name="theme-color" content="#1b1c1f">
+  <link rel="icon" href="../img/favicon.png">
+  <link rel="stylesheet" href="admin.css?v=2">
+</head>
+<body>
+
+<main class="login" id="login">
+  <h1>Штаб</h1>
+  <p class="login-sub">Закрытая страница администрации «Движухи».</p>
+  <form id="loginForm" autocomplete="off">
+    <label for="pw">Пароль</label>
+    <input type="password" id="pw" autocomplete="current-password" spellcheck="false" autofocus>
+    <button type="submit" id="loginGo">Войти</button>
+    <p class="login-err" id="loginErr" role="alert" hidden></p>
+  </form>
+</main>
+
+<div class="app" id="app" hidden>
+  <header class="top">
+    <div>
+      <h1>Штаб</h1>
+      <p class="muted" id="updated"></p>
+    </div>
+    <div class="top-btn">
+      <button type="button" id="refresh">Обновить</button>
+      <button type="button" id="logout">Выйти</button>
+    </div>
+  </header>
+
+  <div class="warn" id="warn" hidden></div>
+
+  <section class="cards" id="cards"></section>
+
+  <nav class="tabs" id="tabs" role="tablist">
+    <button type="button" role="tab" data-tab="log" class="on">Переводы и действия</button>
+    <button type="button" role="tab" data-tab="donors">Донатеры</button>
+    <button type="button" role="tab" data-tab="launcher">Лаунчер</button>
+    <button type="button" role="tab" data-tab="state">Состояние</button>
+  </nav>
+
+  <section class="panel" id="tab-log">
+    <div class="filters">
+      <div class="chips" id="chips">
+        <button type="button" data-f="all" class="on">Все</button>
+        <button type="button" data-f="donation">Донаты</button>
+        <button type="button" data-f="role">Роли</button>
+        <button type="button" data-f="error">Ошибки</button>
+      </div>
+      <input type="search" id="q" placeholder="поиск: ник, Discord, сообщение" spellcheck="false">
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Дата (МСК)</th><th>Что</th><th>Кто</th><th class="num">Сумма</th><th>Через</th><th>Подробности</th></tr></thead>
+      <tbody id="logBody"></tbody>
+    </table></div>
+    <p class="empty" id="logEmpty" hidden>Ничего нет.</p>
+    <button type="button" class="more" id="logMore" hidden>Показать ещё</button>
+  </section>
+
+  <section class="panel" id="tab-donors" hidden>
+    <div class="tbl"><table>
+      <thead><tr><th>Кто</th><th class="num">Всего, ₽</th><th class="num">Донатов</th><th>Первый (МСК)</th><th>Последний (МСК)</th><th>Роль «Спонсор»</th></tr></thead>
+      <tbody id="donorBody"></tbody>
+    </table></div>
+    <p class="empty" id="donorEmpty" hidden>Донатов пока не было.</p>
+  </section>
+
+  <section class="panel" id="tab-launcher" hidden>
+    <p class="note" id="launcherNote"></p>
+    <div class="tbl"><table>
+      <thead><tr><th>Ник</th><th>Первый раз (МСК)</th><th>Последний раз (МСК)</th><th>Статус</th></tr></thead>
+      <tbody id="userBody"></tbody>
+    </table></div>
+    <p class="empty" id="userEmpty" hidden>Ни один лаунчер ещё не обращался к серверу.</p>
+    <h2>Скачивания с GitHub</h2>
+    <p class="note" id="dlNote">Загружаю…</p>
+    <div class="tbl" id="dlWrap" hidden><table>
+      <thead><tr><th>Версия</th><th>Выпущена (МСК)</th><th class="num">Скачиваний</th><th>По файлам</th></tr></thead>
+      <tbody id="dlBody"></tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" id="tab-state" hidden>
+    <div class="tbl"><table>
+      <thead><tr><th>Источник</th><th>Настроен</th><th>Последняя проверка (МСК)</th><th>Ошибка</th></tr></thead>
+      <tbody id="stateBody"></tbody>
+    </table></div>
+    <p class="note" id="stateNote"></p>
+  </section>
+</div>
+
+<script src="decrypt.js?v=2"></script>
+<script src="admin.js?v=2"></script>
+</body>
+</html>

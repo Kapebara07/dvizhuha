@@ -65,11 +65,22 @@ $('#download').addEventListener('click', (e) => {
 osDialog.addEventListener('click', (e) => { if (e.target === osDialog) osDialog.close(); });
 osDialog.querySelectorAll('.os-btn').forEach((a) => a.addEventListener('click', () => setTimeout(() => osDialog.close(), 300)));
 
-// ---------- Поддержать сервер: своё окно, сама оплата — форма ЮMoney ----------
+// ---------- Поддержать сервер: своё окно, сама оплата — на DonationAlerts (старая форма ЮMoney спрятана, режим data-provider="yoomoney") ----------
 const donateDialog = $('#donateDialog');
-// Пока номера кошелька нет, окно работает, но вместо оплаты пишет, что она ещё не подключена.
+const useYoo = donateDialog.dataset.provider === 'yoomoney';
+// Пока адреса страницы доната (или номера кошелька) нет, окно работает, но вместо оплаты пишет, что она ещё не подключена.
+const daUrl = /^https:\/\/(www\.)?donationalerts\.com\/r\/[A-Za-z0-9_]{2,40}$/.test((donateDialog.dataset.da || '').trim()) ? donateDialog.dataset.da.trim() : '';
+const dxUrl = /^https:\/\/donatex\.gg\/[A-Za-z0-9_./-]{2,80}$/.test((donateDialog.dataset.donatex || '').trim()) ? donateDialog.dataset.donatex.trim() : '';
 const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim()) ? donateDialog.dataset.yoomoney.trim() : '';
 {
+  donateDialog.querySelectorAll('.dn-yoo').forEach((n) => { n.hidden = !useYoo; });
+  donateDialog.querySelectorAll('.dn-da').forEach((n) => { n.hidden = useYoo; });
+  if (!useYoo) {
+    // Какой сервис не подключён — той кнопки нет; не подключён ни один — остаётся одна, она скажет «оплата пока не подключена».
+    $('#dnGo').textContent = dxUrl ? 'Через DonationAlerts' : 'Перейти к оплате';
+    $('#dnGo').hidden = !daUrl && !!dxUrl;
+    $('#dnGoX').hidden = !dxUrl;
+  }
   const perk = (donateDialog.dataset.perk || '').trim();
   if (perk) { $('#dnPerk').textContent = perk; $('#dnPerk').hidden = false; }
   let amount = 300;
@@ -79,7 +90,7 @@ const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim
   const setAmount = (a) => {
     amount = a;
     $('#dnAmounts').querySelectorAll('button').forEach((b) => b.classList.toggle('on', Number(b.dataset.a) === a));
-    $('#dnGo').textContent = `Оплатить ${a} ₽`;
+    if (useYoo) $('#dnGo').textContent = `Оплатить ${a} ₽`;
   };
   $('#dnAmounts').addEventListener('click', (e) => {
     const b = e.target.closest('button');
@@ -113,23 +124,51 @@ const wallet = /^41001\d{6,13}$/.test((donateDialog.dataset.yoomoney || '').trim
     'Латиница, цифры и _, от 3 до 16 знаков — как в игре.');
   $('#dnDiscord').addEventListener('input', checkDiscord);
   $('#dnNick').addEventListener('input', checkNick);
-  $('#dnGo').addEventListener('click', () => {
+  const go = (service) => {
     if (!checkDiscord()) { $('#dnDiscord').focus(); return; }
     if (!checkNick()) { $('#dnNick').focus(); return; }
-    if (!wallet) {
-      $('#dnError').hidden = false;
-      return;
+    if (useYoo) {
+      if (!wallet) {
+        $('#dnError').hidden = false;
+        return;
+      }
+      // Метка до 64 знаков: «dvz|discord|ник» — максимум 4 + 32 + 1 + 16.
+      const f = $('#dnYoo');
+      f.elements.receiver.value = wallet;
+      f.elements.paymentType.value = payType;
+      f.elements.sum.value = String(amount);
+      f.elements.label.value = `dvz|${discordValue()}|${$('#dnNick').value.trim()}`;
+      f.submit();
+    } else {
+      const url = service === 'dx' ? dxUrl : daUrl;
+      if (!url) {
+        $('#dnError').hidden = false;
+        return;
+      }
+      $('#dnProv').textContent = service === 'dx' ? 'DonateX' : 'DonationAlerts';
+      // Текст для поля «Сообщение» на странице оплаты — по нему мод находит человека. Копируем ДО window.open:
+      // после открытия вкладки фокус уходит с сайта, и запись в буфер зависает.
+      const msg = donateMessage();
+      $('#dnMsg').textContent = msg;
+      $('#dnMsg').hidden = !msg;
+      $('#dnCopy').hidden = !msg;
+      if (msg) copyText(msg);
+      window.open(url, '_blank', 'noopener');
     }
-    // Метка до 64 знаков: «dvz|discord|ник» — максимум 4 + 32 + 1 + 16.
-    const f = $('#dnYoo');
-    f.elements.receiver.value = wallet;
-    f.elements.paymentType.value = payType;
-    f.elements.sum.value = String(amount);
-    f.elements.label.value = `dvz|${discordValue()}|${$('#dnNick').value.trim()}`;
-    f.submit();
     $('#dnForm').hidden = true;
     $('#dnAfter').hidden = false;
-  });
+  };
+  $('#dnGo').addEventListener('click', () => go('da'));
+  $('#dnGoX').addEventListener('click', () => go('dx'));
+  // «Ник: Kapebara · Discord: kapebara» — формат, который разбирает DvizhDonate (parseMessage).
+  const donateMessage = () => [
+    $('#dnNick').value.trim() && `Ник: ${$('#dnNick').value.trim()}`,
+    discordValue() && `Discord: ${discordValue()}`,
+  ].filter(Boolean).join(' · ');
+  const copyText = (text) => {
+    try { navigator.clipboard.writeText(text).catch(() => {}); } catch { /* без буфера покажем текст на экране */ }
+  };
+  $('#dnCopy').addEventListener('click', () => { copyText($('#dnMsg').textContent); toast('Скопировано'); });
   $('#dnBack').addEventListener('click', () => { $('#dnAfter').hidden = true; $('#dnForm').hidden = false; });
   $('#donateOpen').hidden = false;
   $('#donateOpen').addEventListener('click', () => {
