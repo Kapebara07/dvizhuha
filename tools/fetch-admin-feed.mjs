@@ -6,7 +6,10 @@ import http from 'node:http';
 import https from 'node:https';
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-const SERVER = { host: '45.157.232.7', port: 32331, path: '/dvz/admin/feed' };
+// Порт HTTP-интерфейса мода DvizhFriends: игровой 32331, если хостинг пропускает HTTP через него; иначе выделенный порт
+// (http_port в dvizhfriends/config.json на сервере).
+const HTTP_PORT = 22263;
+const SERVER = { host: '45.157.232.7', port: HTTP_PORT, path: '/dvz/admin/feed' };
 const LIVE = 'https://dvizhuha-mc.github.io/admin/feed.json';
 
 function get(mod, opts, timeout) {
